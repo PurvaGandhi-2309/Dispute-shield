@@ -1,0 +1,12 @@
+# Heavy package dependencies
+node_modules/
+
+# Secret credentials & API keys
+.env
+
+# User uploaded files
+uploads/
+
+# OS system files
+.DS_Store
+Thumbs.db
