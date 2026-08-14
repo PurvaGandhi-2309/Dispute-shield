@@ -327,6 +327,33 @@ export const uploadEvidence = async (req, res) => {
   }
 };
 
+// export const getEvidenceByDispute = async (req, res) => {
+//   try {
+//     const evidence = await Evidence.find({
+//       disputeId: req.params.id
+//     });
+
+//     res.status(200).json(
+//       evidence.map(e => ({
+//         _id: e._id,
+//         fileName: e.fileName,
+//         fileUrl: e.fileUrl,
+//         fileType: e.fileType,
+//         // amount: e.amount
+//         amount: item.amount,
+//         trackingNumber: item.trackingNumber,
+//         customerIp: item.customerIp,
+//         createdAt: item.createdAt,
+//       }))
+//     );
+
+//   } catch (error) {
+//     res.status(500).json({
+//       message: "Error fetching evidence",
+//       error: error.message
+//     });
+//   }
+// };
 export const getEvidenceByDispute = async (req, res) => {
   try {
     const evidence = await Evidence.find({
@@ -339,7 +366,10 @@ export const getEvidenceByDispute = async (req, res) => {
         fileName: e.fileName,
         fileUrl: e.fileUrl,
         fileType: e.fileType,
-        amount: e.amount
+        amount: e.amount,
+        trackingNumber: e.trackingNumber,
+        customerIp: e.customerIp,
+        createdAt: e.createdAt,
       }))
     );
 

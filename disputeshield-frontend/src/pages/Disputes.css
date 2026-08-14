@@ -1,0 +1,397 @@
+* {
+    box-sizing: border-box;
+}
+
+.disputes-page {
+    min-height: 100vh;
+    padding: 38px 42px;
+    background: #f7f8fc;
+    color: #171923;
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.disputes-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.eyebrow {
+    margin: 0 0 7px;
+    color: #7e8390;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+}
+
+.disputes-header h1 {
+    margin: 0;
+    font-size: 28px;
+    letter-spacing: -0.8px;
+}
+
+.page-description {
+    margin: 8px 0 0;
+    color: #858a97;
+    font-size: 13px;
+}
+
+.new-dispute-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 17px;
+    border: none;
+    border-radius: 9px;
+    background: #4f46e5;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 650;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(79, 70, 229, 0.18);
+    transition: 0.2s ease;
+}
+
+.new-dispute-btn:hover {
+    background: #4338ca;
+    transform: translateY(-1px);
+}
+
+.new-dispute-btn span {
+    font-size: 17px;
+}
+
+
+/* =========================
+   SUMMARY
+========================= */
+
+.dispute-summary {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    margin-bottom: 20px;
+    background: #ffffff;
+    border: 1px solid #e8e9ef;
+    border-radius: 13px;
+    overflow: hidden;
+}
+
+.summary-item {
+    position: relative;
+    padding: 18px 20px;
+    border-right: 1px solid #eeeeF2;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.summary-item:last-child {
+    border-right: none;
+}
+
+.summary-item:hover {
+    background: #fafaff;
+}
+
+.summary-item.active::after {
+    content: "";
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: 0;
+    height: 2px;
+    background: #4f46e5;
+}
+
+.summary-item span {
+    display: block;
+    color: #7f8490;
+    font-size: 11px;
+}
+
+.summary-item strong {
+    display: block;
+    margin-top: 7px;
+    font-size: 21px;
+    letter-spacing: -0.5px;
+}
+
+
+/* =========================
+   CONTROLS
+========================= */
+
+.dispute-controls {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.dispute-search {
+    width: 360px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 10px 13px;
+    background: #ffffff;
+    border: 1px solid #e7e8ee;
+    border-radius: 9px;
+    color: #9a9eaa;
+}
+
+.dispute-search span {
+    font-size: 18px;
+}
+
+.dispute-search input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #252936;
+    font-size: 12px;
+}
+
+.dispute-search input::placeholder {
+    color: #a1a5b0;
+}
+
+.control-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.control-buttons button {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 9px 12px;
+    border: 1px solid #e7e8ee;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #6f7481;
+    font-size: 11px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.control-buttons button:hover {
+    background: #f8f8fc;
+}
+
+
+/* =========================
+   TABLE
+========================= */
+
+.disputes-card {
+    background: #ffffff;
+    border: 1px solid #e8e9ef;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.disputes-table {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.disputes-table-header,
+.disputes-table-row {
+    min-width: 900px;
+    display: grid;
+    grid-template-columns: 1.1fr 1.8fr 0.8fr 1.5fr 1.25fr 1fr;
+    gap: 15px;
+    align-items: center;
+}
+
+.disputes-table-header {
+    padding: 13px 20px;
+    background: #fafafd;
+    border-bottom: 1px solid #ececf1;
+    color: #9a9eaa;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+}
+
+.disputes-table-row {
+    padding: 17px 20px;
+    border-bottom: 1px solid #f0f0f3;
+    color: #5d616d;
+    font-size: 11px;
+    transition: 0.2s ease;
+}
+
+.disputes-table-row:last-child {
+    border-bottom: none;
+}
+
+.disputes-table-row:hover {
+    background: #fafaff;
+}
+
+
+/* =========================
+   CUSTOMER
+========================= */
+
+.customer-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.customer-avatar {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #f0efff;
+    color: #554bd4;
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.customer-cell div:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.customer-cell strong {
+    color: #333741;
+    font-size: 11px;
+}
+
+.customer-cell small,
+.dispute-id small {
+    color: #a0a4ae;
+    font-size: 9px;
+}
+
+.dispute-id {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.dispute-id strong {
+    color: #4f46e5;
+    font-size: 11px;
+}
+
+
+/* =========================
+   STATUS
+========================= */
+
+.status {
+    width: fit-content;
+    padding: 5px 9px;
+    border-radius: 20px;
+    font-size: 9px;
+    font-weight: 650;
+}
+
+.status.pending {
+    color: #ad7618;
+    background: #fff7df;
+}
+
+.status.generating {
+    color: #655bd8;
+    background: #efeeff;
+}
+
+.status.submitted {
+    color: #27749d;
+    background: #eaf7fc;
+}
+
+.status.won {
+    color: #16834a;
+    background: #eaf9f0;
+}
+
+
+/* =========================
+   DEADLINE
+========================= */
+
+.deadline {
+    color: #747986;
+    font-size: 10px;
+}
+
+.deadline.urgent {
+    color: #d2554d;
+    font-weight: 650;
+}
+
+.deadline.completed {
+    color: #16834a;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+    .disputes-page {
+        padding: 30px 25px;
+    }
+
+    .dispute-summary {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .summary-item:nth-child(3) {
+        border-right: none;
+    }
+}
+
+@media (max-width: 650px) {
+    .disputes-page {
+        padding: 24px 18px;
+    }
+
+    .disputes-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .dispute-summary {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .dispute-controls {
+        flex-direction: column;
+    }
+
+    .dispute-search {
+        width: 100%;
+    }
+
+    .control-buttons {
+        width: 100%;
+    }
+
+    .control-buttons button {
+        flex: 1;
+        justify-content: center;
+    }
+}
