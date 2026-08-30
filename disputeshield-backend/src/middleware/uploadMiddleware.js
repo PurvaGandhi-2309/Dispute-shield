@@ -6,8 +6,8 @@ const storage = multer.diskStorage({
   destination(req, file, cb) {
     cb(null, 'uploads/');
   },
+
   filename(req, file, cb) {
-    // Unique filename: fieldname-timestamp.extension
     cb(
       null,
       `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
@@ -15,22 +15,39 @@ const storage = multer.diskStorage({
   }
 });
 
-// Filter file formats (Allow PDF, JPG, PNG)
+// Allowed file formats
 const checkFileTypes = (file, cb) => {
-  const filetypes = /jpg|jpeg|png|pdf/;
-  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-  const mimetype = filetypes.test(file.mimetype);
+  const allowedExtensions =
+    /jpg|jpeg|png|pdf|doc|docx|csv/;
+
+  const allowedMimeTypes =
+    /image\/jpeg|image\/png|application\/pdf|application\/msword|application\/vnd\.openxmlformats-officedocument\.wordprocessingml\.document|text\/csv/;
+
+  const extname = allowedExtensions.test(
+    path.extname(file.originalname).toLowerCase()
+  );
+
+  const mimetype = allowedMimeTypes.test(file.mimetype);
 
   if (extname && mimetype) {
     return cb(null, true);
-  } else {
-    cb(new Error('Only images (JPG, PNG) and PDFs are allowed'));
   }
+
+  cb(
+    new Error(
+      'Only PDF, JPG, JPEG, PNG, DOC, DOCX and CSV files are allowed'
+    )
+  );
 };
 
 const upload = multer({
   storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB limit
+
+  // 25 MB per file
+  limits: {
+    fileSize: 25 * 1024 * 1024
+  },
+
   fileFilter: (req, file, cb) => {
     checkFileTypes(file, cb);
   }
