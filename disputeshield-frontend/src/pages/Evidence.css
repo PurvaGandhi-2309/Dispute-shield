@@ -1,226 +1,365 @@
-* {
+/* ============================================
+   Evidence.css — Scoped strictly to .evidence-page
+   ============================================ */
+
+.evidence-page {
+    --ev-bg: #090a0f;
+    --ev-card: rgba(18, 19, 28, 0.85);
+    --ev-border: rgba(255, 255, 255, 0.07);
+    --ev-border-hover: rgba(255, 255, 255, 0.15);
+    --ev-text: #f1f2f6;
+    --ev-muted: #9ba1a6;
+    --ev-accent: #c084fc;
+    --ev-teal: #5eead4;
+    --ev-green: #4ade80;
+    --ev-red: #f87171;
+    --ev-yellow: #fbbf24;
+    --ev-blue: #60a5fa;
+    --ev-radius: 14px;
+
+    min-height: 100vh;
+    background: var(--ev-bg);
+    color: var(--ev-text);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    padding: 3rem 4%;
+}
+
+.evidence-page * {
     box-sizing: border-box;
 }
 
-.evidence-page {
-    min-height: 100vh;
-    padding: 38px 42px;
-    background: #f7f8fc;
-    color: #171923;
-    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        sans-serif;
-}
-
-
-/* =========================
-   HEADER
-========================= */
-
+/* ── Header ───────────────────────────────── */
 .evidence-header {
     display: flex;
-    align-items: flex-end;
     justify-content: space-between;
-    margin-bottom: 30px;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
 }
 
-.eyebrow {
-    margin: 0 0 7px;
-    color: #7e8390;
-    font-size: 10px;
+.evidence-header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.evidence-header .eyebrow {
+    font-size: 0.7rem;
     font-weight: 700;
-    letter-spacing: 1.2px;
+    letter-spacing: 1.6px;
+    color: var(--ev-accent);
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
 }
 
 .evidence-header h1 {
-    margin: 0;
-    font-size: 28px;
-    letter-spacing: -0.8px;
+    font-size: 2.2rem;
+    font-weight: 760;
+    letter-spacing: -1px;
+    margin: 0 0 0.35rem;
 }
 
-.page-description {
-    margin: 8px 0 0;
-    color: #858a97;
-    font-size: 13px;
+.evidence-header .page-description {
+    color: var(--ev-muted);
+    font-size: 0.95rem;
+    margin: 0 0 1.25rem;
 }
 
+/* ── Dispute Selector ─────────────────────── */
+.ev-selector-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.ev-selector-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    color: var(--ev-muted);
+    text-transform: uppercase;
+}
+
+.ev-select-container {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 0.9rem;
+    background: var(--ev-card);
+    border: 1px solid var(--ev-border);
+    border-radius: 10px;
+    width: 300px;
+    backdrop-filter: blur(10px);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.ev-select-container:focus-within {
+    border-color: var(--ev-accent);
+    box-shadow: 0 0 0 3px rgba(192, 132, 252, 0.12);
+}
+
+.ev-select-icon {
+    color: var(--ev-accent);
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.ev-select-container select {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--ev-text);
+    font-size: 0.9rem;
+    font-family: inherit;
+    cursor: pointer;
+    /* remove native arrow — we add our own */
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.ev-select-container select option {
+    background: #12131c;
+    color: var(--ev-text);
+}
+
+.ev-select-arrow {
+    color: var(--ev-muted);
+    font-size: 0.9rem;
+    pointer-events: none;
+}
+
+/* Upload Evidence Button (shared) */
 .upload-evidence-btn {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 11px 17px;
+    gap: 0.5rem;
+    padding: 0.75rem 1.4rem;
+    background: linear-gradient(135deg, var(--ev-teal), var(--ev-accent));
+    color: #080a10;
+    font-size: 0.9rem;
+    font-weight: 700;
     border: none;
-    border-radius: 9px;
-    background: #4f46e5;
-    color: #ffffff;
-    font-size: 12px;
-    font-weight: 650;
+    border-radius: 10px;
     cursor: pointer;
-    box-shadow: 0 6px 16px rgba(79, 70, 229, 0.18);
-    transition: 0.2s ease;
+    transition: transform 0.2s, opacity 0.2s;
+    font-family: inherit;
+    white-space: nowrap;
+    align-self: flex-start;
+    margin-top: 0.5rem;
 }
 
 .upload-evidence-btn:hover {
-    background: #4338ca;
-    transform: translateY(-1px);
+    opacity: 0.88;
+    transform: translateY(-2px);
 }
 
 .upload-evidence-btn span {
-    font-size: 17px;
+    font-size: 1.15rem;
+    line-height: 1;
 }
 
-
-/* =========================
-   SUMMARY
-========================= */
-
+/* ── Summary Cards ────────────────────────── */
 .evidence-summary {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
-    margin-bottom: 20px;
-    background: #e8e9ef;
-    border: 1px solid #e8e9ef;
-    border-radius: 13px;
-    overflow: hidden;
+    gap: 1.25rem;
+    margin-bottom: 2rem;
 }
 
 .evidence-stat {
-    padding: 18px 20px;
-    background: #ffffff;
-    transition: 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 1.4rem;
+    background: var(--ev-card);
+    border: 1px solid var(--ev-border);
+    border-radius: var(--ev-radius);
+    backdrop-filter: blur(10px);
+    transition: border-color 0.2s, transform 0.2s;
 }
 
 .evidence-stat:hover {
-    background: #fafaff;
+    border-color: var(--ev-border-hover);
+    transform: translateY(-2px);
 }
 
-.evidence-stat span {
-    display: block;
-    color: #7f8490;
-    font-size: 11px;
+.ev-stat-alert {
+    border-color: rgba(248, 113, 113, 0.2);
+    background: rgba(248, 113, 113, 0.04);
 }
 
-.evidence-stat strong {
-    display: block;
-    margin-top: 6px;
-    font-size: 22px;
-    letter-spacing: -0.5px;
+.ev-stat-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
 }
 
-.evidence-stat small {
-    display: block;
-    margin-top: 5px;
-    color: #a0a4ae;
-    font-size: 9px;
+.ev-icon-blue {
+    background: rgba(96, 165, 250, 0.12);
+    color: var(--ev-blue);
 }
 
+.ev-icon-green {
+    background: rgba(74, 222, 128, 0.12);
+    color: var(--ev-green);
+}
 
-/* =========================
-   CONTROLS
-========================= */
+.ev-icon-purple {
+    background: rgba(192, 132, 252, 0.12);
+    color: var(--ev-accent);
+}
 
+.ev-icon-red {
+    background: rgba(248, 113, 113, 0.12);
+    color: var(--ev-red);
+}
+
+.ev-stat-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.ev-stat-body span {
+    font-size: 0.8rem;
+    color: var(--ev-muted);
+    font-weight: 500;
+}
+
+.ev-stat-body strong {
+    font-size: 1.7rem;
+    font-weight: 760;
+    line-height: 1.1;
+}
+
+.ev-stat-body small {
+    font-size: 0.72rem;
+    color: rgba(155, 161, 166, 0.65);
+}
+
+/* ── Controls ─────────────────────────────── */
 .evidence-controls {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    gap: 15px;
-    margin-bottom: 15px;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
 }
 
 .evidence-search {
-    width: 360px;
     display: flex;
     align-items: center;
-    gap: 9px;
-    padding: 10px 13px;
-    background: #ffffff;
-    border: 1px solid #e7e8ee;
-    border-radius: 9px;
-    color: #9a9eaa;
+    gap: 0.6rem;
+    flex: 1;
+    min-width: 220px;
+    padding: 0.65rem 1rem;
+    background: var(--ev-card);
+    border: 1px solid var(--ev-border);
+    border-radius: 10px;
+    backdrop-filter: blur(8px);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.evidence-search:focus-within {
+    border-color: var(--ev-accent);
+    box-shadow: 0 0 0 3px rgba(192, 132, 252, 0.1);
 }
 
 .evidence-search span {
-    font-size: 18px;
+    color: var(--ev-muted);
+    font-size: 1.1rem;
+    flex-shrink: 0;
 }
 
 .evidence-search input {
-    width: 100%;
+    flex: 1;
+    background: transparent;
     border: none;
     outline: none;
-    background: transparent;
-    color: #252936;
-    font-size: 12px;
+    color: var(--ev-text);
+    font-size: 0.9rem;
+    font-family: inherit;
 }
 
 .evidence-search input::placeholder {
-    color: #a1a5b0;
+    color: rgba(255, 255, 255, 0.22);
 }
 
 .evidence-filter-buttons {
     display: flex;
-    gap: 8px;
+    gap: 0.5rem;
 }
 
 .evidence-filter-buttons button {
     display: flex;
     align-items: center;
-    gap: 18px;
-    padding: 9px 12px;
-    border: 1px solid #e7e8ee;
-    border-radius: 8px;
-    background: #ffffff;
-    color: #6f7481;
-    font-size: 11px;
+    gap: 0.4rem;
+    padding: 0.65rem 1rem;
+    background: var(--ev-card);
+    border: 1px solid var(--ev-border);
+    border-radius: 10px;
+    color: var(--ev-muted);
+    font-size: 0.85rem;
+    font-weight: 500;
     cursor: pointer;
-    transition: 0.2s ease;
+    transition: all 0.2s;
+    font-family: inherit;
+    backdrop-filter: blur(8px);
 }
 
 .evidence-filter-buttons button:hover {
-    background: #f8f8fc;
+    border-color: var(--ev-border-hover);
+    color: var(--ev-text);
+    background: rgba(255, 255, 255, 0.05);
 }
 
-
-/* =========================
-   TABLE
-========================= */
-
+/* ── Table Card ───────────────────────────── */
 .evidence-card {
-    background: #ffffff;
-    border: 1px solid #e8e9ef;
-    border-radius: 14px;
+    background: var(--ev-card);
+    border: 1px solid var(--ev-border);
+    border-radius: var(--ev-radius);
     overflow: hidden;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.45);
+    margin-bottom: 1.5rem;
 }
 
 .evidence-table {
     width: 100%;
-    overflow-x: auto;
-}
-
-.evidence-table-header,
-.evidence-table-row {
-    min-width: 1000px;
-    display: grid;
-    grid-template-columns: 1.8fr 1.25fr 0.75fr 1.65fr 1.05fr 0.9fr;
-    gap: 15px;
-    align-items: center;
 }
 
 .evidence-table-header {
-    padding: 13px 20px;
-    background: #fafafd;
-    border-bottom: 1px solid #ececf1;
-    color: #9a9eaa;
-    font-size: 9px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.7px;
+    display: grid;
+    grid-template-columns: 2fr 1.2fr 0.9fr 1.5fr 0.9fr 1fr;
+    padding: 0.9rem 1.5rem;
+    border-bottom: 1px solid var(--ev-border);
+    background: rgba(255, 255, 255, 0.025);
 }
 
+.evidence-table-header span {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--ev-muted);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+}
+
+/* ── Table Row ────────────────────────────── */
 .evidence-table-row {
-    padding: 17px 20px;
-    border-bottom: 1px solid #f0f0f3;
-    color: #5d616d;
-    font-size: 11px;
-    transition: 0.2s ease;
+    display: grid;
+    grid-template-columns: 2fr 1.2fr 0.9fr 1.5fr 0.9fr 1fr;
+    padding: 1.1rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    align-items: center;
+    transition: background 0.18s;
+    cursor: pointer;
 }
 
 .evidence-table-row:last-child {
@@ -228,214 +367,677 @@
 }
 
 .evidence-table-row:hover {
-    background: #fafaff;
+    background: rgba(255, 255, 255, 0.03);
 }
 
-
-/* =========================
-   FILE
-========================= */
-
+/* File cell */
 .file-cell {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 0.85rem;
 }
 
 .file-icon {
-    width: 34px;
-    height: 34px;
+    width: 38px;
+    height: 38px;
+    border-radius: 9px;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
-    border-radius: 8px;
-    font-size: 8px;
+    font-size: 0.65rem;
     font-weight: 800;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
 }
 
-.file-icon.pdf {
-    background: #fff0ef;
-    color: #d85b54;
+/* File type colour variants */
+.ev-ft-pdf {
+    background: rgba(248, 113, 113, 0.15);
+    color: var(--ev-red);
+    border: 1px solid rgba(248, 113, 113, 0.2);
 }
 
-.file-icon.image {
-    background: #efeeff;
-    color: #5b53ce;
+.ev-ft-img {
+    background: rgba(74, 222, 128, 0.12);
+    color: var(--ev-green);
+    border: 1px solid rgba(74, 222, 128, 0.2);
 }
 
-.file-cell div:last-child {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
+.ev-ft-csv {
+    background: rgba(96, 165, 250, 0.12);
+    color: var(--ev-blue);
+    border: 1px solid rgba(96, 165, 250, 0.2);
+}
+
+.ev-ft-doc {
+    background: rgba(192, 132, 252, 0.12);
+    color: var(--ev-accent);
+    border: 1px solid rgba(192, 132, 252, 0.2);
+}
+
+.ev-ft-file {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--ev-muted);
+    border: 1px solid var(--ev-border);
 }
 
 .file-cell strong {
-    color: #333741;
-    font-size: 11px;
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--ev-text);
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .file-cell small {
-    color: #a0a4ae;
-    font-size: 9px;
+    display: block;
+    font-size: 0.72rem;
+    color: var(--ev-muted);
+    margin-top: 0.15rem;
 }
 
-
-/* =========================
-   DISPUTE REFERENCE
-========================= */
-
-.dispute-reference {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-}
-
+/* Dispute reference */
 .dispute-reference strong {
-    color: #4f46e5;
-    font-size: 11px;
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 650;
+    color: var(--ev-text);
 }
 
 .dispute-reference small {
-    color: #a0a4ae;
-    font-size: 9px;
+    display: block;
+    font-size: 0.72rem;
+    color: var(--ev-muted);
+    margin-top: 0.15rem;
 }
 
-
-/* =========================
-   DETAILS
-========================= */
-
-.evidence-details {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.evidence-details span {
-    color: #777c88;
-    font-size: 9px;
-}
-
-
-/* =========================
-   STATUS
-========================= */
-
-.evidence-status {
-    width: fit-content;
-    padding: 5px 9px;
-    border-radius: 20px;
-    font-size: 9px;
-    font-weight: 650;
-}
-
-.evidence-status.extracted {
-    color: #16834a;
-    background: #eaf9f0;
-}
-
-.evidence-status.uploaded {
-    color: #655bd8;
-    background: #efeeff;
-}
-
-
-/* =========================
-   DATE
-========================= */
-
-.uploaded-date {
-    color: #747986;
-    font-size: 10px;
-}
-
-
-/* =========================
-   INFORMATION NOTE
-========================= */
-
-.evidence-note {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    margin-top: 18px;
-    padding: 15px 17px;
-    border: 1px solid #e4e3f7;
-    border-radius: 11px;
-    background: #f4f3ff;
-}
-
-.note-icon {
-    width: 22px;
-    height: 22px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    border-radius: 50%;
-    background: #e5e3ff;
-    color: #554bd4;
-    font-size: 11px;
+/* Amount */
+.evidence-table-row>strong {
+    font-size: 0.9rem;
     font-weight: 700;
 }
 
+/* Details */
+.evidence-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.evidence-details span {
+    font-size: 0.78rem;
+    color: var(--ev-muted);
+}
+
+/* Status badges */
+.evidence-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.28rem 0.7rem;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 650;
+    width: fit-content;
+}
+
+.evidence-status.extracted {
+    background: rgba(94, 234, 212, 0.12);
+    color: var(--ev-teal);
+    border: 1px solid rgba(94, 234, 212, 0.2);
+}
+
+.evidence-status.uploaded {
+    background: rgba(74, 222, 128, 0.12);
+    color: var(--ev-green);
+    border: 1px solid rgba(74, 222, 128, 0.2);
+}
+
+.evidence-status.missing {
+    background: rgba(248, 113, 113, 0.12);
+    color: var(--ev-red);
+    border: 1px solid rgba(248, 113, 113, 0.2);
+}
+
+.evidence-status.verified {
+    background: rgba(192, 132, 252, 0.12);
+    color: var(--ev-accent);
+    border: 1px solid rgba(192, 132, 252, 0.2);
+}
+
+/* Uploaded date */
+.uploaded-date {
+    font-size: 0.82rem;
+    color: var(--ev-muted);
+}
+
+/* ── Empty State ──────────────────────────── */
+.ev-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5rem 2rem;
+    gap: 0.65rem;
+    text-align: center;
+}
+
+.ev-empty-icon {
+    font-size: 2.8rem;
+    opacity: 0.3;
+    margin-bottom: 0.5rem;
+}
+
+.ev-empty-state p {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ev-muted);
+    margin: 0;
+}
+
+.ev-empty-state small {
+    font-size: 0.85rem;
+    color: rgba(155, 161, 166, 0.55);
+}
+
+/* ── Upload Drop Zone ─────────────────────── */
+.ev-upload-zone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 2rem 2.5rem;
+    background: rgba(192, 132, 252, 0.04);
+    border: 2px dashed rgba(192, 132, 252, 0.2);
+    border-radius: var(--ev-radius);
+    margin-bottom: 1.5rem;
+    cursor: pointer;
+    transition: border-color 0.25s, background 0.25s;
+    flex-wrap: wrap;
+}
+
+.ev-upload-zone:hover,
+.ev-upload-zone.drag-over {
+    border-color: var(--ev-accent);
+    background: rgba(192, 132, 252, 0.08);
+}
+
+.ev-upload-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(192, 132, 252, 0.1);
+    border: 1px solid rgba(192, 132, 252, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    color: var(--ev-accent);
+    flex-shrink: 0;
+}
+
+.ev-upload-text {
+    flex: 1;
+    min-width: 200px;
+}
+
+.ev-upload-text strong {
+    display: block;
+    font-size: 1rem;
+    font-weight: 650;
+    margin-bottom: 0.25rem;
+}
+
+.ev-upload-text p {
+    font-size: 0.82rem;
+    color: var(--ev-muted);
+    margin: 0;
+}
+
+.ev-upload-btn {
+    /* inherits .upload-evidence-btn, tweak size */
+    padding: 0.65rem 1.25rem !important;
+    font-size: 0.85rem !important;
+    margin-top: 0 !important;
+}
+
+/* ── Info Note ────────────────────────────── */
+.evidence-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    background: rgba(96, 165, 250, 0.05);
+    border: 1px solid rgba(96, 165, 250, 0.15);
+    border-radius: 12px;
+}
+
+.note-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(96, 165, 250, 0.12);
+    border: 1px solid rgba(96, 165, 250, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--ev-blue);
+    flex-shrink: 0;
+}
+
 .evidence-note strong {
-    color: #45415f;
-    font-size: 11px;
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 650;
+    margin-bottom: 0.3rem;
 }
 
 .evidence-note p {
-    margin: 4px 0 0;
-    color: #77738f;
-    font-size: 10px;
-    line-height: 1.5;
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--ev-muted);
+    line-height: 1.55;
 }
 
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media (max-width: 900px) {
-    .evidence-page {
-        padding: 30px 25px;
-    }
-
+/* ── Responsive ───────────────────────────── */
+@media (max-width: 1100px) {
     .evidence-summary {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr 1fr;
     }
 }
 
-@media (max-width: 650px) {
+@media (max-width: 860px) {
+
+    .evidence-table-header,
+    .evidence-table-row {
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+    }
+
+    /* Hide lower-priority columns */
+    .evidence-table-header span:nth-child(4),
+    .evidence-table-header span:nth-child(6),
+    .evidence-table-row .evidence-details,
+    .evidence-table-row .uploaded-date {
+        display: none;
+    }
+}
+
+@media (max-width: 640px) {
     .evidence-page {
-        padding: 24px 18px;
+        padding: 2rem 1.25rem;
     }
 
     .evidence-header {
-        align-items: flex-start;
         flex-direction: column;
-        gap: 20px;
+        gap: 1.25rem;
+    }
+
+    .evidence-header .upload-evidence-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .ev-select-container {
+        width: 100%;
     }
 
     .evidence-summary {
         grid-template-columns: 1fr 1fr;
     }
 
-    .evidence-controls {
+    .evidence-table-header,
+    .evidence-table-row {
+        grid-template-columns: 1.5fr 1fr 1fr;
+    }
+
+    .evidence-table-header span:nth-child(4),
+    .evidence-table-header span:nth-child(5),
+    .evidence-table-header span:nth-child(6),
+    .evidence-table-row .evidence-details,
+    .evidence-table-row .evidence-status,
+    .evidence-table-row .uploaded-date {
+        display: none;
+    }
+}
+
+/* ============================================
+   NEW DISPUTE-BASED EVIDENCE LAYOUT
+   ============================================ */
+
+/* Container for all dispute cards */
+.evidence-disputes {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+/* Each dispute card */
+.evidence-disputes .evidence-card {
+    margin-bottom: 0;
+}
+
+/* Dispute header */
+.evidence-dispute-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--ev-border);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+/* Small DISPUTE label */
+.evidence-dispute-header .eyebrow {
+    margin: 0 0 0.3rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    color: var(--ev-accent);
+}
+
+/* Dispute ID */
+.evidence-dispute-header h2 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+    color: var(--ev-text);
+}
+
+/* Amount + status on the right */
+.dispute-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-left: auto;
+}
+
+/* Amount */
+.dispute-card-meta span:first-child {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--ev-text);
+}
+
+/* Status */
+.dispute-card-meta span:last-child {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0.7rem;
+    border-radius: 20px;
+    background: rgba(192, 132, 252, 0.1);
+    border: 1px solid rgba(192, 132, 252, 0.2);
+    color: var(--ev-accent);
+    font-size: 0.7rem;
+    font-weight: 650;
+    white-space: nowrap;
+}
+
+/* New table inside each dispute */
+.evidence-disputes .evidence-table-header {
+    grid-template-columns: 2fr 1.6fr 0.9fr 1fr;
+    padding: 0.75rem 1.5rem;
+}
+
+/* Evidence rows inside dispute */
+.evidence-disputes .evidence-table-row {
+    grid-template-columns: 2fr 1.6fr 0.9fr 1fr;
+    padding: 0.9rem 1.5rem;
+}
+
+/* Upload button at bottom of each dispute */
+.ev-dispute-upload-btn {
+    margin: 1rem 1.5rem 1.25rem !important;
+    align-self: flex-start;
+}
+
+/* Upload zone inside dispute card */
+.evidence-disputes .ev-upload-zone {
+    margin: 0 1.5rem 1.25rem;
+    padding: 1.5rem;
+    gap: 1rem;
+    cursor: default;
+}
+
+/* Prevent the whole upload zone from feeling oversized */
+.evidence-disputes .ev-upload-icon {
+    width: 42px;
+    height: 42px;
+    font-size: 1.1rem;
+}
+
+.evidence-disputes .ev-upload-text {
+    min-width: 180px;
+}
+
+.evidence-disputes .ev-upload-text strong {
+    font-size: 0.9rem;
+}
+
+.evidence-disputes .ev-upload-text p {
+    font-size: 0.75rem;
+}
+
+/* Selected files section */
+.evidence-disputes .selected-files {
+    width: 100%;
+    padding: 1rem;
+    margin-top: 0.25rem;
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid var(--ev-border);
+    border-radius: 10px;
+}
+
+/* Selected files header */
+.evidence-disputes .selected-files-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.65rem;
+}
+
+.evidence-disputes .selected-files-header strong {
+    font-size: 0.82rem;
+}
+
+.evidence-disputes .selected-files-header span {
+    font-size: 0.72rem;
+    color: var(--ev-muted);
+}
+
+/* Individual selected file */
+.evidence-disputes .selected-file-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.evidence-disputes .selected-file-row:last-of-type {
+    border-bottom: none;
+}
+
+/* File name */
+.evidence-disputes .selected-file-row strong {
+    display: block;
+    max-width: 350px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.82rem;
+}
+
+/* File size */
+.evidence-disputes .selected-file-row small {
+    display: block;
+    margin-top: 0.15rem;
+    font-size: 0.7rem;
+    color: var(--ev-muted);
+}
+
+/* Remove button */
+.evidence-disputes .selected-file-row button {
+    flex-shrink: 0;
+    padding: 0.35rem 0.7rem;
+    background: transparent;
+    border: 1px solid rgba(248, 113, 113, 0.2);
+    border-radius: 7px;
+    color: var(--ev-red);
+    font-size: 0.7rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.evidence-disputes .selected-file-row button:hover {
+    background: rgba(248, 113, 113, 0.08);
+    border-color: rgba(248, 113, 113, 0.4);
+}
+
+/* Cancel + Upload buttons */
+.evidence-disputes .selected-files-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.7rem;
+    margin-top: 0.9rem;
+}
+
+/* Cancel */
+.evidence-disputes .selected-files-actions>button:first-child {
+    padding: 0.65rem 1rem;
+    background: transparent;
+    border: 1px solid var(--ev-border);
+    border-radius: 9px;
+    color: var(--ev-muted);
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.evidence-disputes .selected-files-actions>button:first-child:hover {
+    color: var(--ev-text);
+    border-color: var(--ev-border-hover);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+/* Upload selected files */
+.evidence-disputes .selected-files-actions .upload-evidence-btn {
+    margin: 0 !important;
+    align-self: center;
+    padding: 0.65rem 1rem;
+    font-size: 0.8rem;
+}
+
+
+/* ── Compact empty state ── */
+
+.evidence-disputes .ev-empty-state {
+    padding: 2rem 1.5rem;
+}
+
+.evidence-disputes .ev-empty-icon {
+    font-size: 2rem;
+}
+
+.evidence-disputes .ev-empty-state p {
+    font-size: 0.9rem;
+}
+
+.evidence-disputes .ev-empty-state small {
+    font-size: 0.75rem;
+}
+
+
+/* ── Mobile ── */
+
+@media (max-width: 640px) {
+
+    .evidence-dispute-header {
+        align-items: flex-start;
         flex-direction: column;
+        gap: 0.75rem;
     }
 
-    .evidence-search {
-        width: 100%;
+    .dispute-card-meta {
+        margin-left: 0;
     }
 
-    .evidence-filter-buttons {
-        width: 100%;
+    .evidence-disputes .evidence-table-header {
+        display: none;
     }
 
-    .evidence-filter-buttons button {
-        flex: 1;
+    .evidence-disputes .evidence-table-row {
+        grid-template-columns: 1fr;
+        gap: 0.7rem;
+        padding: 1rem;
+    }
+
+    .evidence-disputes .evidence-details {
+        display: flex;
+    }
+
+    .evidence-disputes .evidence-status {
+        display: inline-flex;
+    }
+
+    .evidence-disputes .uploaded-date {
+        display: block;
+    }
+
+    .evidence-disputes .ev-upload-zone {
+        margin: 0 1rem 1rem;
+        padding: 1.25rem;
+    }
+
+    .evidence-disputes .selected-files-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .evidence-disputes .selected-files-actions button {
         justify-content: center;
     }
+
+}
+
+/* ── Expand / Collapse Dispute ── */
+
+.evidence-dispute-header {
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s ease;
+}
+
+.evidence-dispute-header:hover {
+    background: rgba(255, 255, 255, 0.035);
+}
+
+.ev-expand-icon {
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--ev-border);
+    border-radius: 8px;
+    color: var(--ev-muted);
+    font-size: 1rem;
+    line-height: 1;
+    transition: all 0.2s ease;
+}
+
+.evidence-dispute-header:hover .ev-expand-icon {
+    color: var(--ev-text);
+    border-color: var(--ev-border-hover);
+    background: rgba(255, 255, 255, 0.04);
 }

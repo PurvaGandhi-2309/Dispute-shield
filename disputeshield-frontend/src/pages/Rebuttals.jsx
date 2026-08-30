@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { apiRequest } from "../services/api";
+import { useNavigate } from "react-router-dom";
 import "./Rebuttals.css";
 
 function Rebuttals() {
-
     const [disputes, setDisputes] = useState([]);
+    const [selectedDispute, setSelectedDispute] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchDisputes = async () => {
             try {
-                // const data = await apiRequest("/disputes");
-                // setDisputes(data);
                 const data = await apiRequest("/disputes");
-
-                console.log("Rebuttals disputes:", data);
-
                 setDisputes(data);
+                if (data && data.length > 0) {
+                    setSelectedDispute(data[0]);
+                }
             } catch (error) {
                 console.error("Failed to fetch disputes:", error);
             }
@@ -23,338 +23,182 @@ function Rebuttals() {
 
         fetchDisputes();
     }, []);
+
+    const handleGenerate = async () => {
+        if (!selectedDispute) return;
+        try {
+            await apiRequest(`/disputes/${selectedDispute._id}/generate`, {
+                method: "POST",
+            });
+            const data = await apiRequest("/disputes");
+            setDisputes(data);
+            
+            // Update selected dispute to the newly generated one
+            const updated = data.find(d => d._id === selectedDispute._id);
+            if (updated) setSelectedDispute(updated);
+
+        } catch (error) {
+            console.error("Failed to generate rebuttal:", error);
+        }
+    };
+
     return (
-        <div className="rebuttals-page">
+        <div className="reb-page-container">
+            {/* ── Top Navbar ── */}
+            <nav className="reb-navbar">
+                <div className="reb-nav-left">
+                    <div className="reb-logo-circle"></div>
+                    <a onClick={() => navigate('/dashboard')}>Dashboard</a>
+                    <a href="#">Documents</a>
+                    <a href="#" className="active">Rebuttals</a>
+                </div>
+                <div className="reb-nav-right">
+                    <button className="reb-top-generate-btn" onClick={handleGenerate}>
+                        Generate Rebuttal
+                    </button>
+                    <button className="reb-ai-btn">AI <span>⌄</span></button>
+                    <button className="reb-icon-btn">⌕</button>
+                    <div className="reb-avatar"></div>
+                </div>
+            </nav>
 
-            {/* Header */}
-            <div className="rebuttals-header">
-                <div>
-                    <p className="eyebrow">AI DISPUTE RESPONSE</p>
+            <div className="reb-main-content">
+                {/* ── Header ── */}
+                <header className="reb-header">
                     <h1>Rebuttals</h1>
-                    <p className="page-description">
-                        Generate, review, and manage responses for your disputes.
+                    <p>
+                        Case #{selectedDispute ? selectedDispute.chargebackId.slice(-6) : "4981"} -{" "}
+                        {selectedDispute ? selectedDispute.status : "Pending Review"}
                     </p>
-                </div>
-
-                <button className="generate-btn">
-                    <span>✦</span>
-                    Generate Rebuttal
-                </button>
-            </div>
-
-
-            {/* Overview */}
-            <div className="rebuttal-summary">
-
-                <div className="rebuttal-stat">
-                    <span>Total Rebuttals</span>
-                    <strong>14</strong>
-                    <small>Across active disputes</small>
-                </div>
-
-                <div className="rebuttal-stat">
-                    <span>Needs Review</span>
-                    <strong>4</strong>
-                    <small>Waiting for human review</small>
-                </div>
-
-                <div className="rebuttal-stat">
-                    <span>Submitted</span>
-                    <strong>7</strong>
-                    <small>Responses submitted</small>
-                </div>
-
-                <div className="rebuttal-stat">
-                    <span>Avg. Win Probability</span>
-                    <strong>78%</strong>
-                    <small>Based on available evidence</small>
-                </div>
-
-            </div>
-
-
-            {/* Filters */}
-            <div className="rebuttal-controls">
-
-                <div className="rebuttal-search">
-                    <span>⌕</span>
-
-                    <input
-                        type="text"
-                        placeholder="Search by dispute ID or customer..."
-                    />
-                </div>
-
-                <div className="rebuttal-filters">
-
-                    <button>
-                        All Status
-                        <span>⌄</span>
-                    </button>
-
-                    <button>
-                        Sort
-                        <span>⌄</span>
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            {/* Rebuttal Cards */}
-            <div className="rebuttal-list">
-                {disputes.map((dispute) => (
-                    <div className="rebuttal-card" key={dispute._id}>
-
-                        <div className="rebuttal-card-header">
-
-                            <div className="rebuttal-identity">
-
-                                <div className="rebuttal-icon">✦</div>
-
-                                <div>
-                                    <strong>
-                                        Dispute #{dispute.chargebackId}
-                                    </strong>
-
-                                    <small>
-                                        ₹{dispute.amount}
-                                    </small>
-                                </div>
-
-                            </div>
-
-                            <span className="review-status review">
-                                {dispute.status}
-                            </span>
-
-                        </div>
-
-
-                        <div className="rebuttal-content">
-
-                            <div className="rebuttal-info">
-
-                                <div className="info-item">
-                                    <span>Reason</span>
-
-                                    <strong>
-                                        {dispute.reasonCode || "Not specified"}
-                                    </strong>
-                                </div>
-
-                                <div className="info-item">
-                                    <span>Evidence</span>
-
-                                    <strong>
-                                        Available
-                                    </strong>
-                                </div>
-
-                                <div className="info-item">
-                                    <span>Updated</span>
-
-                                    <strong>
-                                        {dispute.updatedAt
-                                            ? new Date(dispute.updatedAt).toLocaleDateString()
-                                            : "—"}
-                                    </strong>
-                                </div>
-
-                            </div>
-
-
-                            <div className="probability">
-
-                                <div className="probability-top">
-                                    <span>Win Probability</span>
-
-                                    <strong>
-                                        {dispute.winProbabilityScore || 0}%
-                                    </strong>
-                                </div>
-
-                                <div className="probability-bar">
-
-                                    <div
-                                        className="probability-fill"
-                                        style={{
-                                            width: `${dispute.winProbabilityScore || 0}%`
-                                        }}
-                                    ></div>
-
-                                </div>
-
-                                <small>
-                                    Based on available evidence
-                                </small>
-
-                            </div>
-
-                        </div>
-
-
-                        <div className="rebuttal-preview">
-
-                            <div className="preview-header">
-
-                                <span>
-                                    AI-generated rebuttal
-                                </span>
-
-                                <span className="ai-badge">
-                                    AI
-                                </span>
-
-                            </div>
-
-                            <p>
-                                {dispute.rebuttalLetterText ||
-                                    "No rebuttal generated yet."}
-                            </p>
-
-                        </div>
-
-
-                        <div className="rebuttal-actions">
-
-                            <button className="secondary-btn">
-                                Edit
-                            </button>
-
-
-                            <button
-                                className="primary-btn"
-                                onClick={async () => {
-                                    try {
-                                        await apiRequest(
-                                            `/disputes/${dispute._id}/generate`,
-                                            {
-                                                method: "POST",
-                                            }
-                                        );
-
-                                        const data = await apiRequest("/disputes");
-                                        setDisputes(data);
-
-                                    } catch (error) {
-                                        console.error("Failed to generate rebuttal:", error);
-                                    }
-                                }}
-                            >
-                                Generate Rebuttal
-                            </button>
-
-                        </div>
-
-                    </div>
-                ))}
-
-
-                {/* Rebuttal 1
-                <div className="rebuttal-card">
-
-                    <div className="rebuttal-card-header">
-
-                        <div className="rebuttal-identity">
-                            <div className="rebuttal-icon">✦</div>
-
-                            <div>
-                                <strong>Dispute #DS-1024</strong>
-                                <small>Rahul Sharma · ₹4,500</small>
+                </header>
+
+                {/* ── Summary Cards ── */}
+                <div className="reb-summary-grid">
+                    <div className="reb-stat-card">
+                        <div className="reb-stat-icon purple-glow">⚖</div>
+                        <div className="reb-stat-info">
+                            <span>Active Rebuttals</span>
+                            <div className="reb-stat-value">
+                                <strong>14</strong>
                             </div>
                         </div>
-
-                        <span className="review-status review">
-                            Needs Review
-                        </span>
-
                     </div>
 
-
-                    <div className="rebuttal-content">
-
-                        <div className="rebuttal-info">
-
-                            <div className="info-item">
-                                <span>Reason</span>
-                                <strong>Fraudulent transaction</strong>
+                    <div className="reb-stat-card">
+                        <div className="reb-stat-icon teal-glow">❖</div>
+                        <div className="reb-stat-info">
+                            <span>Documents Analyzed</span>
+                            <div className="reb-stat-value">
+                                <strong>129</strong>
                             </div>
-
-                            <div className="info-item">
-                                <span>Evidence</span>
-                                <strong>4 files attached</strong>
-                            </div> */}
-                {/* 
-                            <div className="info-item">
-                                <span>Generated</span>
-                                <strong>10 Aug 2026</strong>
-                            </div>
-
                         </div>
-
-
-                        <div className="probability">
-
-                            <div className="probability-top">
-                                <span>Win Probability</span>
-                                <strong>82%</strong>
-                            </div>
-
-                            <div className="probability-bar">
-                                <div
-                                    className="probability-fill"
-                                    style={{ width: "82%" }}
-                                ></div>
-                            </div>
-
-                            <small>Strong evidence available</small>
-
-                        </div>
-
-                    </div> */}
-                {/* 
-
-                    <div className="rebuttal-preview">
-
-                        <div className="preview-header">
-                            <span>AI-generated rebuttal</span>
-                            <span className="ai-badge">AI</span>
-                        </div>
-
-                        <p>
-                            The transaction was successfully completed and the available
-                            evidence supports the legitimacy of the purchase. Order,
-                            delivery, and customer information are available for review.
-                        </p>
-
                     </div>
 
-
-                    <div className="rebuttal-actions">
-
-                        <button className="secondary-btn">
-                            Edit
-                        </button>
-
-                        <button className="primary-btn">
-                            Review Rebuttal
-                        </button>
-
+                    <div className="reb-stat-card">
+                        <div className="reb-stat-icon purple-glow">📈</div>
+                        <div className="reb-stat-info">
+                            <span>Submission Score</span>
+                            <div className="reb-stat-value">
+                                <strong>8.2</strong>
+                            </div>
+                        </div>
                     </div>
 
-                // </div> */}
-                {/* <p>
-                            The merchant has provided supporting documentation regarding
-                            the order, delivery process, and product condition. The
-                            submitted evidence supports the merchant's position.
-                        </p> */}
+                    <div className="reb-stat-card">
+                        <div className="reb-stat-icon teal-glow">✨</div>
+                        <div className="reb-stat-info">
+                            <span>AI-Generated Points</span>
+                            <div className="reb-stat-value">
+                                <strong>67</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
+                {/* ── Split Layout ── */}
+                <div className="reb-split-layout">
+                    {/* Left: Rebuttals List */}
+                    <div className="reb-list-section">
+                        <h2>Rebuttals List</h2>
+                        <div className="reb-list-container">
+                            {disputes.map((dispute) => (
+                                <div 
+                                    key={dispute._id} 
+                                    className={`reb-list-card ${selectedDispute?._id === dispute._id ? 'active' : ''}`}
+                                    onClick={() => setSelectedDispute(dispute)}
+                                >
+                                    <div className="reb-card-status">
+                                        Status: <span className="reb-badge">{dispute.status}</span>
+                                    </div>
+                                    <div className="reb-card-claim">
+                                        Claim: '{dispute.reasonCode || "Dispute Claim"}'
+                                    </div>
+                                    <div className="reb-card-footer">
+                                        <span>Author: System AI</span>
+                                        <span>
+                                            {dispute.updatedAt 
+                                                ? new Date(dispute.updatedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) 
+                                                : "Oct 26, 2023"}
+                                        </span>
+                                    </div>
+                                </div>
+                            ))}
+                            {disputes.length === 0 && (
+                                <div className="reb-empty-list">No rebuttals found.</div>
+                            )}
+                        </div>
+                    </div>
 
+                    {/* Right: Document Preview */}
+                    <div className="reb-preview-section">
+                        <h2>Document Preview</h2>
+                        <div className="reb-document-paper">
+                            {selectedDispute ? (
+                                <>
+                                    <h3 className="reb-doc-title">
+                                        REBUTTAL CONCERNING CLAIM #{selectedDispute.chargebackId.slice(-6).toUpperCase()}
+                                    </h3>
+                                    <div className="reb-doc-meta">
+                                        <strong>Date:</strong> {new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}<br/>
+                                        <strong>Case Number:</strong> {selectedDispute.chargebackId}
+                                    </div>
 
+                                    {selectedDispute.rebuttalLetterText ? (
+                                        <div className="reb-doc-body">
+                                            {selectedDispute.rebuttalLetterText.split('\n').map((para, idx) => (
+                                                <p key={idx}>{para}</p>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div className="reb-doc-body">
+                                            <p><strong>I. INTRODUCTION...</strong></p>
+                                            <p>This is a placeholder for the generated rebuttal. Click "Generate Rebuttal" below to draft an AI response based on the dispute details and attached evidence.</p>
+                                            <p><strong>II. EVIDENCE ANALYSIS...</strong></p>
+                                            <p>The AI will analyze prior evidence and formulate a comprehensive defense.</p>
+                                            <p><strong>Conclusion...</strong></p>
+                                            <p>... submitted with utmost formality.</p>
+                                        </div>
+                                    )}
+
+                                    <div className="reb-doc-actions">
+                                        <button className="reb-btn-secondary" onClick={handleGenerate}>
+                                            ✦ Generate Rebuttal
+                                        </button>
+                                        <div className="reb-actions-right">
+                                            <button className="reb-btn-outline">↓ Download PDF</button>
+                                            <button className="reb-btn-primary">Submit Rebuttal</button>
+                                        </div>
+                                    </div>
+                                </>
+                            ) : (
+                                <div className="reb-doc-empty">
+                                    Select a dispute from the list to view the document.
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
             </div>
-
         </div>
     );
 }

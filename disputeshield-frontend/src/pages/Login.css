@@ -1,756 +1,249 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600&display=swap');
+/* Login.css - Scoped to .login-page-container */
 
-/* =========================
-   GLOBAL
-========================= */
+.login-page-container {
+    --bg-dark: #090a0f;
+    --card-bg: rgba(23, 24, 33, 0.8);
+    --card-border: rgba(255, 255, 255, 0.1);
+    --text-primary: #ffffff;
+    --text-secondary: #9ba1a6;
+    --accent-blue: #5eead4;
+    --accent-purple: #c084fc;
+    --input-bg: rgba(255, 255, 255, 0.05);
 
-* {
-    box-sizing: border-box;
-}
-
-html,
-body {
-    width: 100%;
-    min-height: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    overflow-y: auto;
-    overflow-x: hidden;
-    font-family: "Inter", sans-serif;
-}
-
-/* =========================
-   PAGE
-========================= */
-
-.login-page {
-    width: 100%;
-    height: 100vh;
-    height: 100dvh;
-    overflow: hidden;
-
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
     display: flex;
-    align-items: stretch;
+    align-items: center;
     justify-content: center;
-
-    background: #0d0d0e;
-    color: #f5f2ed;
-}
-
-/* =========================
-   LEFT SIDE
-========================= */
-
-.login-left {
-    width: 52%;
-    height: 100%;
-    min-height: 0;
-
-    background:
-        radial-gradient(circle at 30% 20%,
-            rgba(180, 145, 115, 0.08) 1px,
-            transparent 1px),
-        #f3f0ea;
-
-    background-size: 18px 18px;
-
-    color: #171717;
+    padding: 2rem;
     position: relative;
-
-    padding: clamp(30px, 5vh, 60px) clamp(30px, 4vw, 50px);
-
-    box-sizing: border-box;
     overflow: hidden;
 }
 
-/* =========================
-   LOGO
-========================= */
-
-.brand {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-
-    font-family: "Playfair Display", serif;
-    font-size: 27px;
-    font-weight: 500;
-}
-
-.brand-icon {
-    width: 38px;
-    height: 38px;
-
-    border: 1.5px solid #161616;
-    border-radius: 5px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-family: "Playfair Display", serif;
-    font-size: 23px;
-}
-
-/* =========================
-   LEFT CONTENT
-========================= */
-
-.left-content {
-    margin-top: clamp(45px, 9vh, 105px);
-    max-width: 620px;
-}
-
-/* =========================
-   EYEBROW
-========================= */
-
-.eyebrow {
-    font-family: "DM Mono", monospace;
-    font-size: 14px;
-    letter-spacing: 2px;
-    color: #9a7259;
-
-    margin: 0 0 clamp(22px, 4vh, 45px);
-}
-
-/* =========================
-   AMOUNT
-========================= */
-
-.amount {
-    font-family: "Playfair Display", serif;
-
-    font-size: clamp(78px, 8.5vw, 155px);
-    line-height: 0.9;
-    letter-spacing: -6px;
-
-    color: #111;
-
-    margin: 0 0 clamp(22px, 3vh, 34px);
-}
-
-.amount span {
-    font-size: 0.48em;
-    color: #a96842;
-    letter-spacing: 0;
-    margin-left: 8px;
-}
-
-/* =========================
-   TAGLINE
-========================= */
-
-.tagline {
-    font-family: "Playfair Display", serif;
-    font-style: italic;
-
-    font-size: clamp(19px, 1.6vw, 25px);
-    line-height: 1.5;
-
-    color: #696560;
-
-    margin: 0 0 clamp(30px, 5vh, 70px);
-}
-
-/* =========================
-   STATS
-========================= */
-
-.stats {
-    border-top: 1px solid #d7d1c9;
-    border-bottom: 1px solid #d7d1c9;
-
-    display: flex;
-
-    padding: clamp(20px, 3vh, 38px) 0;
-
-    margin-bottom: clamp(22px, 3vh, 40px);
-}
-
-.stat {
-    flex: 1;
-    padding-left: 0;
-}
-
-.stat+.stat {
-    border-left: 1px solid #d7d1c9;
-    padding-left: clamp(18px, 3vw, 40px);
-}
-
-.stat-number {
-    font-family: "Playfair Display", serif;
-    font-size: clamp(25px, 2.2vw, 34px);
-
-    color: #171717;
-
-    margin-bottom: 8px;
-}
-
-.stat-label {
-    font-family: "DM Mono", monospace;
-    font-size: 12px;
-    letter-spacing: 0.8px;
-
-    color: #77716b;
-}
-
-/* =========================
-   TESTIMONIAL
-========================= */
-
-.testimonial {
-    border-left: 2px solid #b96b40;
-
-    padding-left: 28px;
-
-    max-width: 580px;
-}
-
-.testimonial p {
-    font-size: clamp(14px, 1.2vw, 18px);
-    line-height: 1.6;
-
-    color: #222;
-
-    margin: 0 0 14px;
-}
-
-.testimonial span {
-    font-family: "DM Mono", monospace;
-    font-size: 12px;
-    color: #77716b;
-}
-
-/* =========================
-   RIGHT SIDE
-========================= */
-
-.login-right {
-    width: 48%;
-    height: 100%;
-    min-height: 0;
-
-    background: #0d0d0e;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: clamp(25px, 4vh, 50px) clamp(25px, 4vw, 50px);
-
+.login-page-container * {
     box-sizing: border-box;
-    overflow: hidden;
 }
 
-/* =========================
-   LOGIN CONTAINER
-========================= */
-
-.login-box {
-    width: 100%;
-    max-width: 500px;
-
-    /* Prevent the form from becoming taller than the viewport */
-    max-height: 100%;
-}
-
-/* =========================
-   HEADING
-========================= */
-
-.login-box h1 {
-    font-family: "Playfair Display", serif;
-
-    font-size: clamp(38px, 3.2vw, 50px);
-    font-weight: 400;
-
-    margin: 0 0 12px;
-
-    color: #f6f3ef;
-}
-
-/* =========================
-   REQUEST ACCESS
-========================= */
-
-.signup-text {
-    color: #9a9794;
-    font-size: 15px;
-
-    margin: 0 0 clamp(22px, 3vh, 44px);
-}
-
-.signup-text a {
-    color: #c87847;
-    margin-left: 5px;
-
-    text-decoration: underline;
-    text-underline-offset: 4px;
-}
-
-/* =========================
-   FORM
-========================= */
-
-.form-group {
-    margin-bottom: clamp(15px, 2.2vh, 30px);
-}
-
-.form-group label {
-    display: block;
-
-    font-size: 15px;
-    font-weight: 600;
-
-    margin-bottom: 9px;
-
-    color: #f3f1ee;
-}
-
-.form-group input {
-    width: 100%;
-    height: clamp(52px, 7vh, 76px);
-
-    box-sizing: border-box;
-
-    background: #171719;
-
-    border: 1px solid #3b3b3d;
-    border-radius: 9px;
-
-    padding: 0 24px;
-
-    color: #f5f2ed;
-    font-size: 16px;
-
-    outline: none;
-
-    transition: border 0.2s ease;
-}
-
-.form-group input::placeholder {
-    color: #777572;
-}
-
-.form-group input:focus {
-    border-color: #8f6b55;
-}
-
-/* =========================
-   PASSWORD
-========================= */
-
-.password-wrapper {
-    position: relative;
-}
-
-.password-wrapper input {
-    padding-right: 90px;
-}
-
-.show-button {
+/* Background Effects */
+.login-bg-glow {
     position: absolute;
-
-    right: 22px;
     top: 50%;
-
-    transform: translateY(-50%);
-
-    background: none;
-    border: none;
-
-    color: #9b9792;
-
-    font-family: "Inter", sans-serif;
-    font-size: 14px;
-
-    cursor: pointer;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(192, 132, 252, 0.15) 0%, rgba(94, 234, 212, 0.1) 50%, transparent 70%);
+    z-index: 0;
+    pointer-events: none;
+    filter: blur(50px);
 }
 
-.show-button:hover {
-    color: #d4cec7;
+/* Login Card */
+.login-card {
+    position: relative;
+    z-index: 1;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 3rem;
+    width: 100%;
+    max-width: 440px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
 }
 
-/* =========================
-   OPTIONS
-========================= */
+/* Header */
+.login-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
 
-.login-options {
+.login-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.login-logo-icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, #c084fc, #5eead4);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #fff;
+    font-size: 1.25rem;
+}
+
+.login-brand-name {
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+.login-header h1 {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.login-header p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+/* Form Styles */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.login-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.login-form-group label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.login-input {
+    width: 100%;
+    background: var(--input-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    font-family: inherit;
+}
+
+.login-input:focus {
+    outline: none;
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 0 2px rgba(192, 132, 252, 0.2);
+}
+
+.login-input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Form Options (Remember Me & Forgot Password) */
+.login-form-options {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
-    margin: 5px 0 clamp(20px, 3vh, 42px);
+    margin-top: 0.25rem;
+    margin-bottom: 0.5rem;
 }
 
-.remember {
+.login-remember {
     display: flex;
     align-items: center;
-    gap: 12px;
-
-    color: #c7c3bf;
-
-    font-size: 14px;
-
+    gap: 0.5rem;
     cursor: pointer;
 }
 
-.remember input {
+.login-remember input[type="checkbox"] {
     appearance: none;
-
-    width: 20px;
-    height: 20px;
-
-    margin: 0;
-
-    border: 1px solid #c4c0bc;
-    border-radius: 3px;
-
-    background: white;
-
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--text-secondary);
+    border-radius: 4px;
+    background: transparent;
     cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
 }
 
-.remember input:checked {
-    background: #c87543;
-    border-color: #c87543;
+.login-remember input[type="checkbox"]:checked {
+    background: var(--accent-purple);
+    border-color: var(--accent-purple);
 }
 
-.forgot {
-    color: #b77a59;
-
-    font-size: 14px;
-
-    text-decoration: underline;
-    text-underline-offset: 4px;
+.login-remember input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    color: white;
+    font-size: 12px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
-/* =========================
-   SIGN IN BUTTON
-========================= */
+.login-remember span {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
 
-.signin-button {
-    width: 100%;
-    height: clamp(54px, 6.5vh, 70px);
+.login-forgot {
+    color: var(--accent-blue);
+    font-size: 0.85rem;
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.2s;
+}
 
+.login-forgot:hover {
+    opacity: 0.8;
+}
+
+/* Submit Button */
+.login-submit-btn {
+    background: linear-gradient(90deg, #5eead4, #c084fc);
+    color: #090a0f;
+    padding: 0.85rem;
+    border-radius: 8px;
+    font-weight: 700;
     border: none;
-    border-radius: 8px;
-
-    background: #c87543;
-
-    color: #111;
-
-    font-size: 17px;
-    font-weight: 600;
-
     cursor: pointer;
-
-    transition:
-        background 0.2s ease,
-        transform 0.15s ease;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    transition: transform 0.2s, opacity 0.2s;
+    font-family: inherit;
 }
 
-.signin-button:hover {
-    background: #d58450;
+.login-submit-btn:hover {
+    opacity: 0.95;
+    transform: translateY(-1px);
 }
 
-.signin-button:active {
-    transform: scale(0.99);
+.login-submit-btn:active {
+    transform: translateY(0);
 }
 
-/* =========================
-   DIVIDER
-========================= */
-
-.divider {
-    display: flex;
-    align-items: center;
-    gap: 22px;
-
-    margin: clamp(20px, 3vh, 42px) 0 clamp(18px, 2.5vh, 30px);
+/* Footer */
+.login-footer {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
 }
 
-.divider span {
-    height: 1px;
-    background: #39393a;
-
-    flex: 1;
+.login-footer a {
+    color: var(--accent-purple);
+    text-decoration: none;
+    font-weight: 500;
+    margin-left: 0.25rem;
 }
 
-.divider p {
-    margin: 0;
-
-    color: #96928e;
-
-    font-size: 14px;
+.login-footer a:hover {
+    text-decoration: underline;
 }
 
-/* =========================
-   SSO BUTTON
-========================= */
-
-.sso-button {
-    width: 100%;
-    height: clamp(54px, 6.5vh, 72px);
-
-    border: 1px solid #3c3c3e;
-    border-radius: 8px;
-
-    background: #141416;
-
-    color: #efedeb;
-
-    font-size: 16px;
-
-    cursor: pointer;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 18px;
-
-    transition: background 0.2s ease;
-}
-
-.sso-button:hover {
-    background: #1c1c1e;
-}
-
-.email-icon {
-    font-size: 23px;
-    line-height: 1;
-}
-
-/* =========================
-   SECURITY
-========================= */
-
-.security {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-
-    margin-top: clamp(20px, 4vh, 60px);
-
-    color: #898581;
-
-    font-size: 13px;
-}
-
-.shield-icon {
-    font-size: 22px;
-    color: #8d8984;
-}
-
-/* =========================
-   SHORT HEIGHT SCREENS
-   Main fix for 768px / laptop
-========================= */
-
-@media (max-height: 800px) and (min-width: 1001px) {
-    .login-left {
-        padding-top: 25px;
-        padding-bottom: 25px;
-    }
-
-    .left-content {
-        margin-top: 35px;
-    }
-
-    .eyebrow {
-        margin-bottom: 18px;
-    }
-
-    .amount {
-        font-size: clamp(72px, 8vw, 105px);
-        margin-bottom: 20px;
-    }
-
-    .tagline {
-        font-size: 19px;
-        margin-bottom: 25px;
-    }
-
-    .stats {
-        padding: 18px 0;
-        margin-bottom: 22px;
-    }
-
-    .stat-number {
-        font-size: 26px;
-    }
-
-    .testimonial p {
-        font-size: 14px;
-    }
-
-    .login-right {
-        padding-top: 20px;
-        padding-bottom: 20px;
-    }
-
-    .login-box h1 {
-        font-size: 40px;
-        margin-bottom: 8px;
-    }
-
-    .signup-text {
-        margin-bottom: 20px;
-    }
-
-    .form-group {
-        margin-bottom: 14px;
-    }
-
-    .form-group label {
-        margin-bottom: 7px;
-    }
-
-    .form-group input {
-        height: 54px;
-    }
-
-    .login-options {
-        margin-bottom: 18px;
-    }
-
-    .signin-button {
-        height: 54px;
-    }
-
-    .divider {
-        margin: 18px 0;
-    }
-
-    .sso-button {
-        height: 54px;
-    }
-
-    .security {
-        margin-top: 18px;
-    }
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media (max-width: 1000px) {
-    body {
-        overflow: auto;
-    }
-
-    .login-page {
-        height: auto;
-        min-height: 100vh;
-        overflow: visible;
-
-        flex-direction: column;
-    }
-
-    .login-left,
-    .login-right {
-        width: 100%;
-    }
-
-    .login-left {
-        height: auto;
-        min-height: auto;
-        overflow: visible;
-
-        padding: 40px;
-    }
-
-    .left-content {
-        margin-top: 70px;
-    }
-
-    .login-right {
-        height: auto;
-        min-height: auto;
-
-        padding: 70px 40px;
-
-        overflow: visible;
-    }
-
-    .login-box {
-        max-height: none;
-    }
-}
-
-/* =========================
-   MOBILE
-========================= */
-
-@media (max-width: 600px) {
-    .login-left {
-        padding: 30px 25px;
-    }
-
-    .brand {
-        font-size: 23px;
-    }
-
-    .left-content {
-        margin-top: 55px;
-    }
-
-    .eyebrow {
-        font-size: 11px;
-        letter-spacing: 1.4px;
-    }
-
-    .amount {
-        font-size: 85px;
-        letter-spacing: -4px;
-    }
-
-    .tagline {
-        font-size: 21px;
-    }
-
-    .stats {
-        gap: 15px;
-    }
-
-    .stat+.stat {
-        padding-left: 15px;
-    }
-
-    .stat-number {
-        font-size: 24px;
-    }
-
-    .stat-label {
-        font-size: 9px;
-    }
-
-    .testimonial p {
-        font-size: 15px;
-    }
-
-    .login-right {
-        padding: 55px 25px;
-    }
-
-    .login-box h1 {
-        font-size: 42px;
-    }
-
-    .login-options {
-        gap: 15px;
-    }
-
-    .remember {
-        font-size: 14px;
-    }
-
-    .forgot {
-        font-size: 14px;
+/* Responsive */
+@media (max-width: 480px) {
+    .login-card {
+        padding: 2rem 1.5rem;
     }
 }
