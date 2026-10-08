@@ -3,14 +3,14 @@
    ============================================ */
 
 .reb-page-container {
-    --bg-dark: #0f111a;
-    --card-bg: rgba(255, 255, 255, 0.03);
-    --border: rgba(255, 255, 255, 0.08);
-    --border-hover: rgba(255, 255, 255, 0.15);
-    --text-primary: #f8f9fa;
-    --text-muted: #9ba1a6;
-    --accent-purple: #c084fc;
-    --accent-teal: #5eead4;
+    --bg-dark: #e6e4df;
+    --card-bg: rgba(255, 255, 255, 0.6);
+    --border: rgba(0, 0, 0, 0.1);
+    --border-hover: rgba(0, 0, 0, 0.15);
+    --text-primary: #000000;
+    --text-muted: #333333;
+    --accent-purple: #4b5563;
+    --accent-teal: #0d9488;
 
     min-height: 100vh;
     background: var(--bg-dark);
@@ -29,7 +29,7 @@
     align-items: center;
     padding: 1.25rem 3%;
     border-bottom: 1px solid var(--border);
-    background: rgba(15, 17, 26, 0.8);
+    background: rgba(230, 228, 223, 0.8);
     backdrop-filter: blur(10px);
 }
 
@@ -39,11 +39,10 @@
     gap: 2rem;
 }
 
-.reb-logo-circle {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent-purple), #6366f1);
+.reb-logo-img {
+    height: 35px;
+    width: auto;
+    object-fit: contain;
     margin-right: 0.5rem;
 }
 
@@ -82,8 +81,8 @@
 }
 
 .reb-top-generate-btn {
-    background: linear-gradient(90deg, var(--rb-teal), var(--rb-accent));
-    color: #000;
+    background: #6b7280;
+    color: #ffffff;
     border: none;
     padding: 0.6rem 1.2rem;
     border-radius: 10px;
@@ -95,16 +94,16 @@
 }
 
 .reb-top-generate-btn:hover {
-    opacity: 0.9;
+    background: #4b5563;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(94, 234, 212, 0.3);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
 .reb-ai-btn {
     display: flex;
     align-items: center;
     gap: 0.4rem;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.05);
     border: 1px solid var(--border);
     border-radius: 20px;
     color: var(--text-primary);
@@ -117,7 +116,7 @@
     width: 34px;
     height: 34px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.05);
     border: 1px solid var(--border);
     color: var(--text-primary);
     display: flex;
@@ -186,9 +185,9 @@
 }
 
 .purple-glow {
-    background: rgba(192, 132, 252, 0.1);
+    background: rgba(107, 114, 128, 0.1);
     color: var(--accent-purple);
-    box-shadow: inset 0 0 0 1px rgba(192, 132, 252, 0.2), 0 0 15px rgba(192, 132, 252, 0.1);
+    box-shadow: inset 0 0 0 1px rgba(107, 114, 128, 0.2), 0 0 15px rgba(107, 114, 128, 0.1);
 }
 
 .teal-glow {
@@ -248,12 +247,12 @@
 
 .reb-list-card:hover {
     border-color: var(--border-hover);
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.05);
 }
 
 .reb-list-card.active {
     border-color: var(--accent-purple);
-    background: linear-gradient(90deg, rgba(192, 132, 252, 0.05), transparent);
+    background: linear-gradient(90deg, rgba(107, 114, 128, 0.05), transparent);
 }
 
 .reb-card-status {
@@ -343,9 +342,9 @@
 }
 
 .reb-btn-secondary {
-    background: rgba(192, 132, 252, 0.15);
-    color: #9333ea;
-    border: 1px solid rgba(192, 132, 252, 0.3);
+    background: rgba(107, 114, 128, 0.15);
+    color: #4b5563;
+    border: 1px solid rgba(107, 114, 128, 0.3);
     padding: 0.6rem 1.2rem;
     border-radius: 6px;
     font-weight: 600;
@@ -354,7 +353,7 @@
 }
 
 .reb-btn-secondary:hover {
-    background: rgba(192, 132, 252, 0.25);
+    background: rgba(107, 114, 128, 0.25);
 }
 
 .reb-btn-outline {
@@ -374,7 +373,7 @@
 }
 
 .reb-btn-primary {
-    background: #111827;
+    background: #6b7280;
     color: #fff;
     border: none;
     padding: 0.6rem 1.2rem;
@@ -385,7 +384,7 @@
 }
 
 .reb-btn-primary:hover {
-    background: #000;
+    background: #4b5563;
 }
 
 /* Empty states */

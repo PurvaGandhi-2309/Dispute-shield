@@ -1,17 +1,17 @@
 /* Dashboard.css - Scoped to .dashboard-container */
 
 .dashboard-container {
-    --bg-dark: #090a0f;
-    --sidebar-bg: rgba(15, 16, 23, 0.95);
-    --card-bg: rgba(23, 24, 33, 0.6);
-    --card-border: rgba(255, 255, 255, 0.08);
-    --text-primary: #ffffff;
-    --text-secondary: #9ba1a6;
-    --accent-blue: #5eead4;
-    --accent-purple: #c084fc;
-    --accent-green: #4ade80;
-    --accent-red: #ef4444;
-    --accent-yellow: #fbbf24;
+    --bg-dark: #e6e4df;
+    --sidebar-bg: rgba(230, 228, 223, 0.95);
+    --card-bg: rgba(255, 255, 255, 0.6);
+    --card-border: rgba(0, 0, 0, 0.1);
+    --text-primary: #000000;
+    --text-secondary: #333333;
+    --accent-blue: #0d9488;
+    --accent-purple: #7e22ce;
+    --accent-green: #16a34a;
+    --accent-red: #dc2626;
+    --accent-yellow: #d97706;
     
     background-color: var(--bg-dark);
     color: var(--text-primary);
@@ -52,23 +52,10 @@
     border-bottom: 1px solid var(--card-border);
 }
 
-.brand-icon {
-    width: 32px;
-    height: 32px;
-    background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    color: #fff;
-    font-size: 1.2rem;
-}
-
-.brand-text {
-    font-weight: 700;
-    font-size: 1.1rem;
-    letter-spacing: 0.5px;
+.dashboard-logo-img {
+    max-height: 50px;
+    width: auto;
+    object-fit: contain;
 }
 
 .sidebar-nav {
@@ -95,7 +82,7 @@
 
 .nav-item:hover {
     color: var(--text-primary);
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.05);
 }
 
 .nav-item.active {
@@ -142,7 +129,7 @@
     justify-content: space-between;
     padding: 0 2.5rem;
     border-bottom: 1px solid var(--card-border);
-    background: rgba(9, 10, 15, 0.8);
+    background: rgba(230, 228, 223, 0.8);
     backdrop-filter: blur(10px);
     z-index: 5;
 }
@@ -150,7 +137,7 @@
 .search-container {
     display: flex;
     align-items: center;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.05);
     border: 1px solid var(--card-border);
     border-radius: 8px;
     padding: 0.5rem 1rem;
@@ -260,8 +247,8 @@
 }
 
 .btn-primary {
-    background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
-    color: #000;
+    background: #6b7280;
+    color: #ffffff;
     border: none;
     padding: 0.75rem 1.25rem;
     border-radius: 8px;
@@ -275,7 +262,7 @@
 }
 
 .btn-primary:hover {
-    opacity: 0.9;
+    background: #4b5563;
     transform: translateY(-1px);
 }
 
@@ -298,7 +285,7 @@
 
 .metric-card:hover {
     transform: translateY(-2px);
-    border-color: rgba(255, 255, 255, 0.15);
+    border-color: rgba(0, 0, 0, 0.15);
 }
 
 .metric-card.primary {
@@ -320,7 +307,7 @@
     width: 32px;
     height: 32px;
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.05);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -384,7 +371,7 @@
 }
 
 .btn-secondary {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.05);
     border: 1px solid var(--card-border);
     color: var(--text-primary);
     padding: 0.5rem 1rem;
@@ -395,7 +382,7 @@
 }
 
 .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.1);
 }
 
 /* Dummy Chart Area */
@@ -457,7 +444,7 @@
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    border: 8px solid rgba(255, 255, 255, 0.05);
+    border: 8px solid rgba(0, 0, 0, 0.05);
     border-top-color: var(--accent-blue);
     border-right-color: var(--accent-purple);
     display: flex;
@@ -530,13 +517,13 @@
 
 .dashboard-table td {
     padding: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
     font-size: 0.9rem;
     vertical-align: middle;
 }
 
 .dashboard-table tr:hover td {
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(0, 0, 0, 0.02);
 }
 
 .table-customer {
@@ -548,7 +535,7 @@
 .customer-avatar {
     width: 32px;
     height: 32px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.1);
     border-radius: 50%;
     display: flex;
     align-items: center;

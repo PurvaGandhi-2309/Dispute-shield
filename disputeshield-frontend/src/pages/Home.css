@@ -1,15 +1,20 @@
 /* Home.css - Scoped to .home-container */
 
+body {
+    margin: 0;
+    padding: 0;
+}
+
 .home-container {
-    --bg-dark: #090a0f;
-    --card-bg: rgba(23, 24, 33, 0.6);
-    --card-border: rgba(255, 255, 255, 0.05);
-    --text-primary: #ffffff;
-    --text-secondary: #9ba1a6;
-    --accent-blue: #5eead4;
-    --accent-purple: #c084fc;
-    --glow-primary: rgba(94, 234, 212, 0.15);
-    --glow-purple: rgba(192, 132, 252, 0.15);
+    --bg-dark: #e6e4df;
+    --card-bg: rgba(255, 255, 255, 0.6);
+    --card-border: rgba(0, 0, 0, 0.1);
+    --text-primary: #000000;
+    --text-secondary: #333333;
+    --accent-blue: #0d9488;
+    --accent-purple: #7e22ce;
+    --glow-primary: rgba(13, 148, 136, 0.15);
+    --glow-purple: rgba(126, 34, 206, 0.15);
     
     background-color: var(--bg-dark);
     color: var(--text-primary);
@@ -39,7 +44,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 1.5rem 5%;
-    background: rgba(9, 10, 15, 0.8);
+    background: rgba(230, 228, 223, 0.8);
     backdrop-filter: blur(12px);
     position: sticky;
     top: 0;
@@ -53,33 +58,10 @@
     gap: 0.75rem;
 }
 
-.home-logo-icon {
-    width: 32px;
-    height: 32px;
-    background: linear-gradient(135deg, #c084fc, #5eead4);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    color: #fff;
-    font-size: 1.2rem;
-}
-
-.home-brand-text {
-    display: flex;
-    flex-direction: column;
-}
-
-.home-brand-name {
-    font-weight: 700;
-    font-size: 1.1rem;
-    line-height: 1.2;
-}
-
-.home-brand-sub {
-    font-size: 0.65rem;
-    color: var(--text-secondary);
+.home-logo-img {
+    height: 50px;
+    width: auto;
+    object-fit: contain;
 }
 
 .home-nav-links {
@@ -114,9 +96,9 @@
 }
 
 .home-btn-primary {
-    background: linear-gradient(90deg, #5eead4, #c084fc);
-    color: #090a0f;
-    padding: 0.6rem 1.25rem;
+    background: #6b7280;
+    color: #ffffff;
+    padding: 0.8rem 1.5rem;
     border-radius: 6px;
     font-weight: 600;
     border: none;
@@ -126,7 +108,7 @@
 }
 
 .home-btn-primary:hover {
-    opacity: 0.9;
+    background: #4b5563;
 }
 
 .home-btn-outline {
@@ -142,7 +124,7 @@
 }
 
 .home-btn-outline:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.05);
 }
 
 /* Hero Section */
@@ -237,51 +219,56 @@
 .home-hero-mockup {
     position: relative;
     z-index: 1;
-    margin-top: 4rem;
+    margin-top: 5rem;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    max-width: 900px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    max-width: 1200px;
+    width: 100%;
     margin-inline: auto;
 }
 
 .home-mockup-card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
-    border-radius: 12px;
-    padding: 1.5rem;
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
     text-align: left;
     backdrop-filter: blur(10px);
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .home-mockup-large {
-    grid-column: span 2;
-    background: linear-gradient(135deg, rgba(94, 234, 212, 0.1), rgba(192, 132, 252, 0.1));
+    grid-column: span 1;
+    background: linear-gradient(135deg, rgba(13, 148, 136, 0.1), rgba(126, 34, 206, 0.1));
 }
 
 .home-mockup-label {
-    font-size: 0.75rem;
+    font-size: 0.9rem;
     color: var(--text-secondary);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
 .home-mockup-value {
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-weight: 700;
     color: var(--text-primary);
 }
 
 .home-mockup-sub {
-    font-size: 0.8rem;
+    font-size: 0.95rem;
     color: var(--accent-blue);
-    margin-top: 0.25rem;
+    margin-top: 0.5rem;
 }
 
 .home-tag {
     display: inline-block;
     padding: 0.25rem 0.5rem;
-    background: rgba(251, 191, 36, 0.1);
-    color: #fbd38d;
+    background: rgba(245, 158, 11, 0.1);
+    color: #d97706;
     font-size: 0.7rem;
     border-radius: 4px;
     margin-top: 1rem;
@@ -353,18 +340,19 @@
 .home-problem-card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
-    border-radius: 12px;
-    padding: 2rem 1.5rem;
+    border-radius: 16px;
+    padding: 3rem 2rem;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    min-height: 280px;
 }
 
 .home-problem-icon {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.05);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -373,8 +361,9 @@
 }
 
 .home-problem-card h3 {
-    font-size: 1.1rem;
+    font-size: 1.5rem;
     margin-bottom: 1rem;
+    font-weight: 700;
 }
 
 .home-problem-card p {
@@ -393,13 +382,15 @@
 .home-product-card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
-    border-radius: 12px;
-    padding: 2rem 1.5rem;
+    border-radius: 16px;
+    padding: 3rem 2rem;
+    min-height: 280px;
 }
 
 .home-product-card h3 {
-    font-size: 1.1rem;
-    margin: 1rem 0;
+    font-size: 1.5rem;
+    margin: 1.5rem 0 1rem;
+    font-weight: 700;
 }
 
 .home-product-card p {
@@ -423,16 +414,17 @@
 .home-step-card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
-    border-radius: 12px;
-    padding: 1.5rem;
+    border-radius: 16px;
+    padding: 3rem 2rem;
     position: relative;
+    min-height: 260px;
 }
 
 .home-step-number {
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -451,8 +443,9 @@
 }
 
 .home-step-card h3 {
-    font-size: 1rem;
-    margin-bottom: 0.75rem;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
 }
 
 .home-step-card p {
@@ -477,8 +470,8 @@
 .home-stat-card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
-    border-radius: 12px;
-    padding: 1.5rem;
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
     display: flex;
     flex-direction: column;
 }
@@ -490,8 +483,8 @@
 }
 
 .home-stat-label {
-    font-size: 0.9rem;
-    font-weight: 600;
+    font-size: 1.25rem;
+    font-weight: 700;
 }
 
 .home-stat-desc {
@@ -501,7 +494,7 @@
 }
 
 .home-review-card {
-    background: linear-gradient(135deg, rgba(23, 24, 33, 0.8), rgba(192, 132, 252, 0.05));
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(126, 34, 206, 0.05));
     border: 1px solid var(--card-border);
     border-radius: 12px;
     padding: 2.5rem;
@@ -567,8 +560,8 @@
 }
 
 .home-cta-box {
-    background: linear-gradient(90deg, rgba(94, 234, 212, 0.15), rgba(192, 132, 252, 0.15));
-    border: 1px solid rgba(255,255,255,0.1);
+    background: linear-gradient(90deg, rgba(13, 148, 136, 0.15), rgba(126, 34, 206, 0.15));
+    border: 1px solid rgba(0,0,0,0.1);
     border-radius: 16px;
     padding: 4rem;
     display: flex;

@@ -1,6 +1,7 @@
 import { apiRequest } from "../services/api";
 import React, { useEffect, useState } from "react";
 import "./Disputes.css";
+import { ShieldAlert } from 'lucide-react';
 
 function Disputes() {
     const [disputes, setDisputes] = useState([]);
@@ -22,6 +23,32 @@ function Disputes() {
     });
 
     const [creating, setCreating] = useState(false);
+    const [actionMenuOpen, setActionMenuOpen] = useState(null);
+
+    const handleDeleteDispute = async (id) => {
+        if (!window.confirm("Are you sure you want to delete this dispute?")) return;
+        try {
+            await apiRequest(`/disputes/${id}`, { method: "DELETE" });
+            setDisputes(prev => prev.filter(d => d._id !== id));
+        } catch (err) {
+            console.error(err);
+            alert("Failed to delete dispute");
+        }
+    };
+
+    const handleUpdateStatus = async (id, newStatus) => {
+        try {
+            await apiRequest(`/disputes/${id}/status`, {
+                method: "PUT",
+                body: JSON.stringify({ status: newStatus })
+            });
+            setDisputes(prev => prev.map(d => d._id === id ? { ...d, status: newStatus } : d));
+            setActionMenuOpen(null);
+        } catch (err) {
+            console.error(err);
+            alert("Failed to update status");
+        }
+    };
 
     useEffect(() => {
         const fetchDisputes = async () => {
@@ -620,6 +647,7 @@ function Disputes() {
                         <span>Reason</span>
                         <span>Status</span>
                         <span>Deadline</span>
+                        <span></span>
                     </div>
 
                     {filteredDisputes.length > 0 ? (
@@ -665,11 +693,30 @@ function Disputes() {
                                         : "No deadline"}
                                 </span>
 
+                                <div style={{ position: 'relative' }}>
+                                    <button 
+                                        onClick={() => setActionMenuOpen(actionMenuOpen === dispute._id ? null : dispute._id)}
+                                        style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', fontSize: '1.2rem', padding: '5px' }}
+                                    >
+                                        ⋮
+                                    </button>
+                                    
+                                    {actionMenuOpen === dispute._id && (
+                                        <div style={{ position: 'absolute', right: '0', top: '30px', background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: '8px', padding: '0.5rem', zIndex: 10, boxShadow: '0 4px 12px rgba(0,0,0,0.2)', width: '150px' }}>
+                                            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px', paddingLeft: '8px' }}>CHANGE STATUS</div>
+                                            <button onClick={() => handleUpdateStatus(dispute._id, "NEEDS_EVIDENCE")} style={{ display: 'block', width: '100%', textAlign: 'left', padding: '6px 8px', background: 'transparent', border: 'none', color: 'var(--text-primary)', cursor: 'pointer', fontSize: '0.85rem' }}>Needs Evidence</button>
+                                            <button onClick={() => handleUpdateStatus(dispute._id, "UNDER_REVIEW")} style={{ display: 'block', width: '100%', textAlign: 'left', padding: '6px 8px', background: 'transparent', border: 'none', color: 'var(--text-primary)', cursor: 'pointer', fontSize: '0.85rem' }}>Under Review</button>
+                                            <div style={{ borderTop: '1px solid var(--border)', margin: '4px 0' }}></div>
+                                            <button onClick={() => handleDeleteDispute(dispute._id)} style={{ display: 'block', width: '100%', textAlign: 'left', padding: '6px 8px', background: 'transparent', border: 'none', color: '#ff4d4f', cursor: 'pointer', fontSize: '0.85rem' }}>Delete Dispute</button>
+                                        </div>
+                                    )}
+                                </div>
+
                             </div>
                         ))
                     ) : (
                         <div className="disputes-empty">
-                            <div className="empty-icon">◈</div>
+                            <div className="empty-icon"><ShieldAlert size={48} style={{ opacity: 0.5 }} /></div>
                             <p>No disputes found.</p>
                             <small>Try adjusting your search or filters.</small>
                         </div>

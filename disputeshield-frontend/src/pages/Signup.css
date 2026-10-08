@@ -1,6 +1,6 @@
-/* Login.css - Scoped to .login-page-container */
+/* Signup.css - Scoped to .signup-page-container */
 
-.login-page-container {
+.signup-page-container {
     --bg-dark: #e6e4df;
     --card-bg: rgba(255, 255, 255, 0.6);
     --card-border: rgba(0, 0, 0, 0.1);
@@ -22,12 +22,12 @@
     overflow: hidden;
 }
 
-.login-page-container * {
+.signup-page-container * {
     box-sizing: border-box;
 }
 
 /* Background Effects */
-.login-bg-glow {
+.signup-bg-glow {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -40,8 +40,8 @@
     filter: blur(50px);
 }
 
-/* Login Card */
-.login-card {
+/* Signup Card */
+.signup-card {
     position: relative;
     z-index: 1;
     background: var(--card-bg);
@@ -55,12 +55,12 @@
 }
 
 /* Header */
-.login-header {
+.signup-header {
     text-align: center;
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
 }
 
-.login-brand {
+.signup-brand {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -68,43 +68,43 @@
     margin-bottom: 1.5rem;
 }
 
-.login-logo-img {
+.signup-logo-img {
     max-height: 80px;
     width: auto;
     object-fit: contain;
 }
 
-.login-header h1 {
+.signup-header h1 {
     font-size: 1.75rem;
     margin-bottom: 0.5rem;
     font-weight: 700;
 }
 
-.login-header p {
+.signup-header p {
     color: var(--text-secondary);
     font-size: 0.95rem;
 }
 
 /* Form Styles */
-.login-form {
+.signup-form {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 1rem;
 }
 
-.login-form-group {
+.signup-form-group {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.4rem;
 }
 
-.login-form-group label {
+.signup-form-group label {
     font-size: 0.9rem;
     font-weight: 500;
     color: var(--text-primary);
 }
 
-.login-input {
+.signup-input {
     width: 100%;
     background: var(--input-bg);
     border: 1px solid var(--card-border);
@@ -116,78 +116,18 @@
     font-family: inherit;
 }
 
-.login-input:focus {
+.signup-input:focus {
     outline: none;
     border-color: var(--accent-purple);
     box-shadow: 0 0 0 2px rgba(192, 132, 252, 0.2);
 }
 
-.login-input::placeholder {
+.signup-input::placeholder {
     color: rgba(0, 0, 0, 0.5);
 }
 
-/* Form Options (Remember Me & Forgot Password) */
-.login-form-options {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 0.25rem;
-    margin-bottom: 0.5rem;
-}
-
-.login-remember {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-}
-
-.login-remember input[type="checkbox"] {
-    appearance: none;
-    width: 16px;
-    height: 16px;
-    border: 1px solid var(--text-secondary);
-    border-radius: 4px;
-    background: transparent;
-    cursor: pointer;
-    position: relative;
-    transition: all 0.2s;
-}
-
-.login-remember input[type="checkbox"]:checked {
-    background: var(--accent-purple);
-    border-color: var(--accent-purple);
-}
-
-.login-remember input[type="checkbox"]:checked::after {
-    content: '✓';
-    position: absolute;
-    color: #ffffff;
-    font-size: 12px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.login-remember span {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-}
-
-.login-forgot {
-    color: var(--accent-blue);
-    font-size: 0.85rem;
-    text-decoration: none;
-    font-weight: 500;
-    transition: opacity 0.2s;
-}
-
-.login-forgot:hover {
-    opacity: 0.8;
-}
-
 /* Submit Button */
-.login-submit-btn {
+.signup-submit-btn {
     background: #6b7280;
     color: #ffffff;
     padding: 0.85rem;
@@ -201,37 +141,37 @@
     font-family: inherit;
 }
 
-.login-submit-btn:hover {
+.signup-submit-btn:hover {
     background: #4b5563;
     transform: translateY(-1px);
 }
 
-.login-submit-btn:active {
+.signup-submit-btn:active {
     transform: translateY(0);
 }
 
 /* Footer */
-.login-footer {
+.signup-footer {
     text-align: center;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
     font-size: 0.9rem;
     color: var(--text-secondary);
 }
 
-.login-footer a {
+.signup-footer a {
     color: var(--accent-purple);
     text-decoration: none;
     font-weight: 500;
     margin-left: 0.25rem;
 }
 
-.login-footer a:hover {
+.signup-footer a:hover {
     text-decoration: underline;
 }
 
 /* Responsive */
 @media (max-width: 480px) {
-    .login-card {
+    .signup-card {
         padding: 2rem 1.5rem;
     }
 }

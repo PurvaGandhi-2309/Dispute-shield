@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
+import logo from '../assets/logo.png';
 
 function Login() {
   const navigate = useNavigate();
@@ -63,8 +64,7 @@ function Login() {
       <div className="login-card">
         <div className="login-header">
           <div className="login-brand" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
-            <div className="login-logo-icon">D</div>
-            <div className="login-brand-name">DisputeShield</div>
+            <img src={logo} alt="DisputeShield" className="login-logo-img" />
           </div>
           <h1>Welcome back</h1>
           <p>Enter your details to access your account.</p>
@@ -121,7 +121,7 @@ function Login() {
 
         <div className="login-footer">
           Don't have an account?
-          <a href="#" onClick={(e) => e.preventDefault()}>Sign up</a>
+          <a href="#" onClick={(e) => { e.preventDefault(); navigate('/signup'); }}>Sign up</a>
         </div>
       </div>
     </div>

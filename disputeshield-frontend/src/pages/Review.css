@@ -5,8 +5,8 @@
 .review-page {
     min-height: 100vh;
     padding: 34px 42px 70px;
-    background: #f5f6fa;
-    color: #252631;
+    background: #e6e4df;
+    color: #000000;
     font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
         sans-serif;
 }
@@ -45,7 +45,7 @@
 .section-eyebrow,
 .panel-eyebrow {
     display: block;
-    color: #655dd2;
+    color: #6b7280;
     font-size: 7px;
     font-weight: 800;
     letter-spacing: 1px;
@@ -101,7 +101,7 @@
     margin-bottom: 18px;
     border: 1px solid #e1e2e8;
     border-radius: 13px;
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.6);
     overflow: hidden;
 }
 
@@ -159,7 +159,7 @@
     padding: 23px;
     border: 1px solid #e1e2e8;
     border-radius: 13px;
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.6);
 }
 
 .section-heading {
@@ -179,8 +179,8 @@
 .section-count {
     padding: 6px 9px;
     border-radius: 20px;
-    background: #f0efff;
-    color: #6058cf;
+    background: #f3f4f6;
+    color: #4b5563;
     font-size: 7px;
     font-weight: 750;
 }
@@ -216,8 +216,8 @@
     align-items: center;
     justify-content: center;
     border-radius: 8px;
-    background: #f0efff;
-    color: #5d55cd;
+    background: #f3f4f6;
+    color: #4b5563;
     font-size: 6px;
     font-weight: 800;
 }
@@ -291,8 +291,8 @@
 .ai-label {
     padding: 6px 9px;
     border-radius: 20px;
-    background: #efeeff;
-    color: #5d55cd;
+    background: #f3f4f6;
+    color: #4b5563;
     font-size: 6px;
     font-weight: 800;
 }
@@ -333,14 +333,14 @@
     border: 1px solid #dcdde4;
     border-radius: 7px;
     background: #ffffff;
-    color: #5c54cc;
+    color: #4b5563;
     font-size: 7px;
     font-weight: 700;
     cursor: pointer;
 }
 
 .document-action:hover {
-    background: #f7f6ff;
+    background: #f3f4f6;
 }
 
 
@@ -367,7 +367,7 @@
     height: 7px;
     margin-left: 3px;
     border-radius: 50%;
-    background: #6259d0;
+    background: #9ca3af;
 }
 
 .activity-row strong,
@@ -408,14 +408,14 @@
 
 .insight-panel {
     padding: 23px;
-    border: 1px solid #2b2c38;
+    border: 1px solid #e1e2e8;
     border-radius: 13px;
-    background: #272833;
-    color: #ffffff;
+    background: rgba(255, 255, 255, 0.6);
+    color: #000000;
 }
 
 .insight-panel .panel-eyebrow {
-    color: #9992ed;
+    color: #655dd2;
 }
 
 .insight-heading {
@@ -432,7 +432,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 9px;
-    background: #5149c9;
+    background: #9ca3af;
     font-size: 8px;
     font-weight: 800;
 }
@@ -443,7 +443,7 @@
 }
 
 .insight-heading span {
-    color: #9b9da9;
+    color: #656975;
     font-size: 7px;
 }
 
@@ -455,7 +455,7 @@
 
 .insight-panel>p {
     margin: 19px 0 0;
-    color: #a0a2ad;
+    color: #656975;
     font-size: 8px;
     line-height: 1.7;
 }
@@ -469,7 +469,7 @@
     padding: 21px;
     border: 1px solid #e1e2e8;
     border-radius: 13px;
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.6);
 }
 
 .side-heading {
@@ -486,7 +486,7 @@
 }
 
 .side-heading strong {
-    color: #5c54cd;
+    color: #111827;
     font-size: 19px;
 }
 
@@ -502,7 +502,7 @@
     width: 82%;
     height: 100%;
     border-radius: inherit;
-    background: #5b53cc;
+    background: #6b7280;
 }
 
 .side-note {
@@ -573,11 +573,11 @@
     padding: 23px;
     border: 1px solid #dcdaf3;
     border-radius: 13px;
-    background: #efeeff;
+    background: rgba(255, 255, 255, 0.6);
 }
 
 .decision-panel .panel-eyebrow {
-    color: #5e56cd;
+    color: #6b7280;
 }
 
 .decision-panel h3 {
@@ -604,13 +604,13 @@
 }
 
 .approve-button {
-    border: 1px solid #4f46e5;
-    background: #4f46e5;
+    border: 1px solid #6b7280;
+    background: #6b7280;
     color: #ffffff;
 }
 
 .approve-button:hover {
-    background: #433bd1;
+    background: #4b5563;
 }
 
 .changes-button {
@@ -724,5 +724,16 @@
 
     .activity-row time {
         grid-column: 2;
+    }
+}
+
+@keyframes slideUp {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, 20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, 0);
     }
 }

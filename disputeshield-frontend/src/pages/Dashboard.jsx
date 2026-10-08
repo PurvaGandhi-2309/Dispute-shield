@@ -2,6 +2,20 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { apiRequest } from "../services/api";
 import "./Dashboard.css";
+import logo from '../assets/logo.png';
+import { 
+    LayoutDashboard, 
+    ShieldAlert, 
+    FileText, 
+    Sparkles, 
+    BarChart2, 
+    Settings,
+    IndianRupee,
+    TrendingUp,
+    CheckCircle,
+    Search,
+    Bell
+} from 'lucide-react';
 
 function Dashboard() {
     const [disputes, setDisputes] = useState([]);
@@ -21,48 +35,68 @@ function Dashboard() {
     }, []);
 
     // Derived Metrics
-    const activeDisputesCount = disputes.length;
-    const amountAtRisk = disputes.reduce((total, dispute) => total + (dispute.amount || 0), 0);
-    const recoveryRate = disputes.length
-        ? Math.round(disputes.reduce((total, dispute) => total + (dispute.winProbabilityScore || 0), 0) / disputes.length)
-        : 0;
-    const resolvedCount = disputes.filter(d => d.status === "WON" || d.status === "LOST").length;
+    // Real Dashboard Metrics
+    const activeDisputes = disputes.filter(
+        d => d.status !== "WON" && d.status !== "LOST"
+    );
 
+    const activeDisputesCount = activeDisputes.length;
+
+    const amountAtRisk = activeDisputes.reduce(
+        (total, dispute) => total + (Number(dispute.amount) || 0),
+        0
+    );
+
+    const wonAmount = disputes
+        .filter(d => d.status === "WON")
+        .reduce((total, dispute) => total + (Number(dispute.amount) || 0), 0);
+
+    const lostAmount = disputes
+        .filter(d => d.status === "LOST")
+        .reduce((total, dispute) => total + (Number(dispute.amount) || 0), 0);
+
+    const recoveryRate =
+        wonAmount + lostAmount > 0
+            ? Math.round((wonAmount / (wonAmount + lostAmount)) * 100)
+            : 0;
+
+    const resolvedCount = disputes.filter(
+        d => d.status === "WON" || d.status === "LOST"
+    ).length;
     return (
         <div className="dashboard-container">
             {/* Sidebar */}
             <aside className="dashboard-sidebar">
                 <div className="sidebar-brand">
-                    <div className="brand-icon">D</div>
-                    <span className="brand-text">DisputeShield</span>
+                    <img src={logo} alt="DisputeShield" className="dashboard-logo-img" />
                 </div>
 
                 <nav className="sidebar-nav">
                     <div className="nav-item active">
-                        <span className="nav-icon">⊞</span>
+                        <span className="nav-icon"><LayoutDashboard size={20} /></span>
                         Overview
                     </div>
                     <Link to="/disputes" className="nav-item">
-                        <span className="nav-icon">◈</span>
+                        <span className="nav-icon"><ShieldAlert size={20} /></span>
                         Disputes
                     </Link>
                     <Link to="/evidence" className="nav-item">
-                        <span className="nav-icon">📄</span>
+                        <span className="nav-icon"><FileText size={20} /></span>
                         Evidence
                     </Link>
                     <Link to="/rebuttals" className="nav-item">
-                        <span className="nav-icon">✨</span>
+                        <span className="nav-icon"><Sparkles size={20} /></span>
                         Rebuttals
                     </Link>
                     <div className="nav-item">
-                        <span className="nav-icon">📊</span>
+                        <span className="nav-icon"><BarChart2 size={20} /></span>
                         Analytics
                     </div>
                 </nav>
 
                 <div className="sidebar-bottom">
                     <div className="nav-item">
-                        <span className="nav-icon">⚙️</span>
+                        <span className="nav-icon"><Settings size={20} /></span>
                         Settings
                     </div>
                 </div>
@@ -73,11 +107,11 @@ function Dashboard() {
                 {/* Topbar */}
                 <header className="dashboard-topnav">
                     <div className="search-container">
-                        <span>🔍</span>
+                        <span><Search size={18} /></span>
                         <input type="text" placeholder="Search disputes..." />
                     </div>
                     <div className="topnav-actions">
-                        <button className="btn-icon">🔔</button>
+                        <button className="btn-icon"><Bell size={20} /></button>
                         <div className="user-profile">
                             <div className="user-avatar">M</div>
                             <div className="user-info">
@@ -107,7 +141,7 @@ function Dashboard() {
                         <div className="metric-card primary">
                             <div className="metric-top">
                                 <span>Active Disputes</span>
-                                <span className="metric-icon">◈</span>
+                                <span className="metric-icon"><ShieldAlert size={18} /></span>
                             </div>
                             <div className="metric-value">{activeDisputesCount}</div>
                             <div className="metric-change positive">
@@ -118,7 +152,7 @@ function Dashboard() {
                         <div className="metric-card">
                             <div className="metric-top">
                                 <span>Amount at Risk</span>
-                                <span className="metric-icon">₹</span>
+                                <span className="metric-icon"><IndianRupee size={18} /></span>
                             </div>
                             <div className="metric-value">₹{amountAtRisk.toLocaleString("en-IN")}</div>
                             <div className="metric-change negative">
@@ -129,7 +163,7 @@ function Dashboard() {
                         <div className="metric-card">
                             <div className="metric-top">
                                 <span>Recovery Rate</span>
-                                <span className="metric-icon">↗</span>
+                                <span className="metric-icon"><TrendingUp size={18} /></span>
                             </div>
                             <div className="metric-value">{recoveryRate}%</div>
                             <div className="metric-change positive">
@@ -140,7 +174,7 @@ function Dashboard() {
                         <div className="metric-card">
                             <div className="metric-top">
                                 <span>Resolved</span>
-                                <span className="metric-icon">✓</span>
+                                <span className="metric-icon"><CheckCircle size={18} /></span>
                             </div>
                             <div className="metric-value">{resolvedCount}</div>
                             <div className="metric-change neutral">
@@ -168,13 +202,13 @@ function Dashboard() {
                                     <span>0</span>
                                 </div>
                                 <div className="chart-bars">
-                                    <div className="bar" style={{height: "30%"}}></div>
-                                    <div className="bar" style={{height: "50%"}}></div>
-                                    <div className="bar" style={{height: "40%"}}></div>
-                                    <div className="bar" style={{height: "80%"}}></div>
-                                    <div className="bar" style={{height: "60%"}}></div>
-                                    <div className="bar" style={{height: "90%"}}></div>
-                                    <div className="bar" style={{height: "50%"}}></div>
+                                    <div className="bar" style={{ height: "30%" }}></div>
+                                    <div className="bar" style={{ height: "50%" }}></div>
+                                    <div className="bar" style={{ height: "40%" }}></div>
+                                    <div className="bar" style={{ height: "80%" }}></div>
+                                    <div className="bar" style={{ height: "60%" }}></div>
+                                    <div className="bar" style={{ height: "90%" }}></div>
+                                    <div className="bar" style={{ height: "50%" }}></div>
                                 </div>
                                 <div className="chart-x-axis">
                                     <span>Jul 12</span>
@@ -278,7 +312,7 @@ function Dashboard() {
                                         ))
                                     ) : (
                                         <tr>
-                                            <td colSpan="5" style={{textAlign: "center", color: "var(--text-secondary)"}}>
+                                            <td colSpan="5" style={{ textAlign: "center", color: "var(--text-secondary)" }}>
                                                 No disputes found.
                                             </td>
                                         </tr>

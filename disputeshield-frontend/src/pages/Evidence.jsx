@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { apiRequest } from "../services/api";
 import "./Evidence.css";
+import { FolderOpen, CheckCircle, Zap, AlertTriangle } from 'lucide-react';
 
 function getFileTypeLabel(fileType) {
     if (!fileType) return "FILE";
@@ -61,7 +62,7 @@ function Evidence() {
     // Selected files for each dispute
     const [selectedFiles, setSelectedFiles] = useState({});
 
-
+    // console.log("EVIDENCE DATA:", evidenceByDispute);
     // ─────────────────────────────────────
     // FETCH DISPUTES
     // ─────────────────────────────────────
@@ -219,16 +220,87 @@ function Evidence() {
     // UPLOAD FILES
     // ─────────────────────────────────────
 
+    // const handleUploadEvidence = async (disputeId) => {
+
+    //     const files = selectedFiles[disputeId] || [];
+
+    //     if (files.length === 0) {
+
+    //         alert("Please select at least one file.");
+
+    //         return;
+
+    //     }
+
+    //     try {
+
+    //         for (const file of files) {
+
+    //             const formData = new FormData();
+
+    //             formData.append(
+    //                 "evidence",
+    //                 file
+    //             );
+
+    //             await apiRequest(
+    //                 `/disputes/${disputeId}/upload`,
+    //                 {
+    //                     method: "POST",
+    //                     body: formData
+    //                 }
+    //             );
+
+    //         }
+
+    //         alert(
+    //             "Evidence uploaded successfully."
+    //         );
+
+    //         setSelectedFiles((prev) => ({
+
+    //             ...prev,
+
+    //             [disputeId]: []
+
+    //         }));
+
+
+
+
+    //         setUploadingDispute(null);
+
+
+    //         const updatedEvidence =
+    //             await apiRequest(
+    //                 `/disputes/${disputeId}/evidence`
+    //             );
+
+    //         setEvidenceByDispute((prev) => ({
+
+    //             ...prev,
+
+    //             [disputeId]: updatedEvidence
+
+    //         }));
+
+    //         //     
+    //     } catch (error) {
+
+    //         console.error("UPLOAD ERROR:", error);
+
+    //         alert(
+    //             `Upload failed: ${error.message}`
+    //         );
+
+    //     }
     const handleUploadEvidence = async (disputeId) => {
 
         const files = selectedFiles[disputeId] || [];
 
         if (files.length === 0) {
-
             alert("Please select at least one file.");
-
             return;
-
         }
 
         try {
@@ -237,10 +309,9 @@ function Evidence() {
 
                 const formData = new FormData();
 
-                formData.append(
-                    "evidence",
-                    file
-                );
+                // formData.append("evidence", file);
+                formData.append("file", file);
+
 
                 await apiRequest(
                     `/disputes/${disputeId}/upload`,
@@ -249,47 +320,31 @@ function Evidence() {
                         body: formData
                     }
                 );
-
             }
 
-            alert(
-                "Evidence uploaded successfully."
-            );
+            alert("Evidence uploaded successfully.");
 
             setSelectedFiles((prev) => ({
-
                 ...prev,
-
                 [disputeId]: []
-
             }));
 
             setUploadingDispute(null);
 
-
-            const updatedEvidence =
-                await apiRequest(
-                    `/disputes/${disputeId}/evidence`
-                );
+            const updatedEvidence = await apiRequest(
+                `/disputes/${disputeId}/evidence`
+            );
 
             setEvidenceByDispute((prev) => ({
-
                 ...prev,
-
                 [disputeId]: updatedEvidence
-
             }));
 
         } catch (error) {
 
-            console.error(
-                "Failed to upload evidence:",
-                error
-            );
+            console.error("UPLOAD ERROR:", error);
 
-            alert(
-                "Failed to upload evidence."
-            );
+            alert(`Upload failed: ${error.message}`);
 
         }
 
@@ -360,7 +415,7 @@ function Evidence() {
                 <div className="evidence-stat">
 
                     <div className="ev-stat-icon ev-icon-blue">
-                        📁
+                        <FolderOpen size={20} />
                     </div>
 
                     <div className="ev-stat-body">
@@ -391,7 +446,7 @@ function Evidence() {
                 <div className="evidence-stat">
 
                     <div className="ev-stat-icon ev-icon-green">
-                        ✓
+                        <CheckCircle size={20} />
                     </div>
 
                     <div className="ev-stat-body">
@@ -413,6 +468,13 @@ function Evidence() {
                         <small>
                             Documents and images
                         </small>
+                        {/* <small>
+                            {item.fileType || "Document"}
+                            {" • "}
+                            {item.fileSize
+                                ? `${(item.fileSize / (1024 * 1024)).toFixed(2)} MB`
+                                : "Size unavailable"}
+                        </small> */}
 
                     </div>
 
@@ -422,7 +484,7 @@ function Evidence() {
                 <div className="evidence-stat">
 
                     <div className="ev-stat-icon ev-icon-purple">
-                        ⚡
+                        <Zap size={20} />
                     </div>
 
                     <div className="ev-stat-body">
@@ -454,7 +516,7 @@ function Evidence() {
                 <div className="evidence-stat ev-stat-alert">
 
                     <div className="ev-stat-icon ev-icon-red">
-                        ⚠
+                        <AlertTriangle size={20} />
                     </div>
 
                     <div className="ev-stat-body">
@@ -689,10 +751,9 @@ function Evidence() {
                                                                             </strong>
 
                                                                             <small>
-                                                                                {
-                                                                                    item.fileType ||
-                                                                                    "Document"
-                                                                                }
+                                                                                {item.fileType || "Document"}
+                                                                                {item.fileSize > 0 &&
+                                                                                    ` • ${(item.fileSize / (1024 * 1024)).toFixed(2)} MB`}
                                                                             </small>
 
                                                                         </div>
@@ -717,6 +778,19 @@ function Evidence() {
                                                                                 "N/A"
                                                                             }
                                                                         </span>
+
+                                                                    </div>
+                                                                    <div className="evidence-actions">
+
+                                                                        <a
+                                                                            onClick={() => console.log("FILE URL:", item.fileUrl)}
+                                                                            href={`http://localhost:5000${item.fileUrl}`}
+                                                                            target="_blank"
+                                                                            rel="noopener noreferrer"
+                                                                            className="view-evidence-btn"
+                                                                        >
+                                                                            View
+                                                                        </a>
 
                                                                     </div>
 

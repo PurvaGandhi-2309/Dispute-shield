@@ -1,12 +1,49 @@
 import React, { useEffect, useState } from "react";
 import { apiRequest } from "../services/api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "./Rebuttals.css";
+import logo from '../assets/logo.png';
+import rebuttalIcon from '../assets/rebuttal-icon-transparent.png';
+import { 
+    LayoutDashboard, 
+    ShieldAlert, 
+    FileText, 
+    Sparkles, 
+    BarChart2, 
+    Settings,
+    Search,
+    Bell,
+    Scale,
+    TrendingUp
+} from 'lucide-react';
 
 function Rebuttals() {
     const [disputes, setDisputes] = useState([]);
     const [selectedDispute, setSelectedDispute] = useState(null);
     const navigate = useNavigate();
+
+
+    const handleGenerate = async () => {
+        if (!selectedDispute) return;
+
+        try {
+            const generated = await apiRequest(
+                `/disputes/${selectedDispute._id}/generate`,
+                {
+                    method: "POST",
+                }
+            );
+
+            setSelectedDispute(generated);
+
+            const data = await apiRequest("/disputes");
+            setDisputes(data);
+
+        } catch (error) {
+            console.error("Failed to generate rebuttal:", error);
+        }
+    };
+
 
     useEffect(() => {
         const fetchDisputes = async () => {
@@ -24,30 +61,15 @@ function Rebuttals() {
         fetchDisputes();
     }, []);
 
-    const handleGenerate = async () => {
-        if (!selectedDispute) return;
-        try {
-            await apiRequest(`/disputes/${selectedDispute._id}/generate`, {
-                method: "POST",
-            });
-            const data = await apiRequest("/disputes");
-            setDisputes(data);
-            
-            // Update selected dispute to the newly generated one
-            const updated = data.find(d => d._id === selectedDispute._id);
-            if (updated) setSelectedDispute(updated);
+    // 
 
-        } catch (error) {
-            console.error("Failed to generate rebuttal:", error);
-        }
-    };
 
     return (
         <div className="reb-page-container">
             {/* ── Top Navbar ── */}
             <nav className="reb-navbar">
                 <div className="reb-nav-left">
-                    <div className="reb-logo-circle"></div>
+                    <img src={logo} alt="DisputeShield" className="reb-logo-img" />
                     <a onClick={() => navigate('/dashboard')}>Dashboard</a>
                     <a href="#">Documents</a>
                     <a href="#" className="active">Rebuttals</a>
@@ -75,7 +97,7 @@ function Rebuttals() {
                 {/* ── Summary Cards ── */}
                 <div className="reb-summary-grid">
                     <div className="reb-stat-card">
-                        <div className="reb-stat-icon purple-glow">⚖</div>
+                        <div className="reb-stat-icon purple-glow"><Scale size={20} /></div>
                         <div className="reb-stat-info">
                             <span>Active Rebuttals</span>
                             <div className="reb-stat-value">
@@ -85,7 +107,7 @@ function Rebuttals() {
                     </div>
 
                     <div className="reb-stat-card">
-                        <div className="reb-stat-icon teal-glow">❖</div>
+                        <div className="reb-stat-icon teal-glow"><FileText size={20} /></div>
                         <div className="reb-stat-info">
                             <span>Documents Analyzed</span>
                             <div className="reb-stat-value">
@@ -95,7 +117,7 @@ function Rebuttals() {
                     </div>
 
                     <div className="reb-stat-card">
-                        <div className="reb-stat-icon purple-glow">📈</div>
+                        <div className="reb-stat-icon purple-glow"><TrendingUp size={20} /></div>
                         <div className="reb-stat-info">
                             <span>Submission Score</span>
                             <div className="reb-stat-value">
@@ -105,7 +127,9 @@ function Rebuttals() {
                     </div>
 
                     <div className="reb-stat-card">
-                        <div className="reb-stat-icon teal-glow">✨</div>
+                        <div className="reb-stat-icon teal-glow" style={{ padding: '4px' }}>
+                            <img src={rebuttalIcon} alt="AI Rebuttals" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                        </div>
                         <div className="reb-stat-info">
                             <span>AI-Generated Points</span>
                             <div className="reb-stat-value">
@@ -122,8 +146,8 @@ function Rebuttals() {
                         <h2>Rebuttals List</h2>
                         <div className="reb-list-container">
                             {disputes.map((dispute) => (
-                                <div 
-                                    key={dispute._id} 
+                                <div
+                                    key={dispute._id}
                                     className={`reb-list-card ${selectedDispute?._id === dispute._id ? 'active' : ''}`}
                                     onClick={() => setSelectedDispute(dispute)}
                                 >
@@ -136,8 +160,8 @@ function Rebuttals() {
                                     <div className="reb-card-footer">
                                         <span>Author: System AI</span>
                                         <span>
-                                            {dispute.updatedAt 
-                                                ? new Date(dispute.updatedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) 
+                                            {dispute.updatedAt
+                                                ? new Date(dispute.updatedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
                                                 : "Oct 26, 2023"}
                                         </span>
                                     </div>
@@ -159,7 +183,7 @@ function Rebuttals() {
                                         REBUTTAL CONCERNING CLAIM #{selectedDispute.chargebackId.slice(-6).toUpperCase()}
                                     </h3>
                                     <div className="reb-doc-meta">
-                                        <strong>Date:</strong> {new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}<br/>
+                                        <strong>Date:</strong> {new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}<br />
                                         <strong>Case Number:</strong> {selectedDispute.chargebackId}
                                     </div>
 
@@ -185,8 +209,100 @@ function Rebuttals() {
                                             ✦ Generate Rebuttal
                                         </button>
                                         <div className="reb-actions-right">
-                                            <button className="reb-btn-outline">↓ Download PDF</button>
-                                            <button className="reb-btn-primary">Submit Rebuttal</button>
+                                            <button className="reb-btn-outline"
+                                                onClick={async () => {
+                                                    if (!selectedDispute?.pdfUrl) {
+                                                        alert("PDF is not available. Generate the rebuttal first.");
+                                                        return;
+                                                    }
+
+                                                    const token = localStorage.getItem("token");
+
+                                                    const response = await fetch(
+                                                        `http://localhost:5000/api/disputes/${selectedDispute._id}/download-pdf`,
+                                                        {
+                                                            headers: {
+                                                                Authorization: `Bearer ${token}`
+                                                            }
+                                                        }
+                                                    );
+
+                                                    if (!response.ok) {
+                                                        alert("Failed to download PDF.");
+                                                        return;
+                                                    }
+
+                                                    const blob = await response.blob();
+                                                    const url = window.URL.createObjectURL(blob);
+
+                                                    const link = document.createElement("a");
+                                                    link.href = url;
+                                                    link.download = "rebuttal.pdf";
+                                                    link.click();
+
+                                                    window.URL.revokeObjectURL(url);
+                                                }}
+                                            >
+                                                ↓ Download PDF
+                                            </button>
+
+                                            {/* // window.open(
+                                                    //     `http://localhost:5000${selectedDispute.pdfUrl}`,
+                                            //     "_blank"
+                                            // ); */}
+
+                                            <button
+                                                className="reb-btn-primary"
+                                                onClick={async () => {
+                                                    if (!selectedDispute) {
+                                                        alert("Please select a dispute.");
+                                                        return;
+                                                    }
+
+                                                    if (!selectedDispute.rebuttalLetterText) {
+                                                        alert("Please generate the rebuttal first.");
+                                                        return;
+                                                    }
+
+                                                    try {
+                                                        const token = localStorage.getItem("token");
+
+                                                        const response = await fetch(
+                                                            `http://localhost:5000/api/disputes/${selectedDispute._id}/finalize`,
+                                                            {
+                                                                method: "POST",
+                                                                headers: {
+                                                                    "Content-Type": "application/json",
+                                                                    Authorization: `Bearer ${token}`
+                                                                },
+                                                                body: JSON.stringify({
+                                                                    decision: "RESOLVED",
+                                                                    reason: "Rebuttal submitted"
+                                                                })
+                                                            }
+                                                        );
+
+                                                        const data = await response.json();
+
+                                                        if (!response.ok) {
+                                                            throw new Error(data.message || "Failed to submit rebuttal");
+                                                        }
+
+                                                        alert("Rebuttal submitted successfully.");
+
+                                                        setSelectedDispute((prev) => ({
+                                                            ...prev,
+                                                            finalDecision: data.finalDecision
+                                                        }));
+
+                                                    } catch (error) {
+                                                        console.error("Submit rebuttal failed:", error);
+                                                        alert(`Submit failed: ${error.message}`);
+                                                    }
+                                                }}
+                                            >
+                                                Submit Rebuttal
+                                            </button>
                                         </div>
                                     </div>
                                 </>
@@ -199,7 +315,7 @@ function Rebuttals() {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
 

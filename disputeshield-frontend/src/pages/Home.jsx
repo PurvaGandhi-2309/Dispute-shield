@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Home.css';
+import logo from '../assets/logo.png';
+import rebuttalIcon from '../assets/rebuttal-icon-transparent.png';
 import {
   ShieldCheck,
   Zap,
@@ -22,11 +24,7 @@ function Home() {
       {/* Navigation */}
       <nav className="home-nav">
         <div className="home-brand">
-          <div className="home-logo-icon">D</div>
-          <div className="home-brand-text">
-            <span className="home-brand-name">DisputeShield</span>
-            <span className="home-brand-sub">Protect. Defend. Win.</span>
-          </div>
+          <img src={logo} alt="DisputeShield" className="home-logo-img" />
         </div>
         
         <div className="home-nav-links">
@@ -38,8 +36,8 @@ function Home() {
         </div>
 
         <div className="home-nav-actions">
+          <button className="home-btn-primary" onClick={() => navigate('/signup')}>Sign Up</button>
           <button className="home-btn-login" onClick={() => navigate('/login')}>Log In</button>
-          <button className="home-btn-primary" onClick={() => navigate('/login')}>Get Started Free</button>
         </div>
       </nav>
 
@@ -56,7 +54,7 @@ function Home() {
           </p>
           
           <div className="home-hero-buttons">
-            <button className="home-btn-primary" onClick={() => navigate('/login')}>
+            <button className="home-btn-primary" onClick={() => navigate('/signup')}>
               Get Started Free <ArrowRight size={16} style={{display: 'inline', marginLeft: '4px', verticalAlign: 'middle'}}/>
             </button>
             <button className="home-btn-outline">Book a Demo</button>
@@ -154,8 +152,8 @@ function Home() {
             <p>Automatically gather and organize all the evidence you need to build a strong case.</p>
           </div>
           <div className="home-product-card">
-            <div className="home-problem-icon home-icon-purple">
-              <Zap size={20} />
+            <div className="home-problem-icon home-icon-purple" style={{ padding: '0' }}>
+              <img src={rebuttalIcon} alt="AI Rebuttals" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
             </div>
             <h3>AI-Powered Rebuttals</h3>
             <p>Generate compelling, data-backed rebuttals in seconds with our advanced AI.</p>
@@ -198,7 +196,9 @@ function Home() {
           </div>
           <div className="home-step-card">
             <div className="home-step-number">3</div>
-            <div className="home-step-icon home-icon-purple" style={{background: 'transparent'}}>✨</div>
+            <div className="home-step-icon home-icon-purple" style={{background: 'transparent', padding: '0', height: '40px', width: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                <img src={rebuttalIcon} alt="AI Rebuttals" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+            </div>
             <h3>AI Generates Rebuttal</h3>
             <p>Our AI creates a compelling rebuttal letter tailored to the dispute reason.</p>
           </div>
@@ -277,12 +277,12 @@ function Home() {
       <section className="home-cta-section">
         <div className="home-cta-box">
           <div className="home-cta-content">
-            <div className="home-section-label" style={{color: '#111'}}>READY TO PROTECT YOUR REVENUE?</div>
+            <div className="home-section-label" style={{color: '#000'}}>READY TO PROTECT YOUR REVENUE?</div>
             <h2>Start winning more disputes today</h2>
-            <p style={{color: 'rgba(255,255,255,0.8)'}}>Join thousands of merchants who trust DisputeShield to protect their business.</p>
+            <p style={{color: '#000000'}}>Join thousands of merchants who trust DisputeShield to protect their business.</p>
           </div>
           <div className="home-cta-actions">
-            <button className="home-btn-primary" onClick={() => navigate('/login')}>Get Started Free <ArrowRight size={16} style={{display: 'inline', marginLeft: '4px', verticalAlign: 'middle'}}/></button>
+            <button className="home-btn-primary" onClick={() => navigate('/signup')}>Get Started Free <ArrowRight size={16} style={{display: 'inline', marginLeft: '4px', verticalAlign: 'middle'}}/></button>
             <button className="home-btn-outline">Talk to an Expert</button>
           </div>
         </div>
@@ -293,11 +293,7 @@ function Home() {
         <div className="home-footer-grid">
           <div className="home-footer-brand">
             <div className="home-brand">
-              <div className="home-logo-icon">D</div>
-              <div className="home-brand-text">
-                <span className="home-brand-name">DisputeShield</span>
-                <span className="home-brand-sub">Protect. Defend. Win.</span>
-              </div>
+              <img src={logo} alt="DisputeShield" className="home-logo-img" />
             </div>
             <p>AI-powered chargeback protection for forward-thinking merchants.</p>
             <div className="home-footer-socials">
