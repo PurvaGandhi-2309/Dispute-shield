@@ -38,6 +38,10 @@ const evidenceSchema = new mongoose.Schema({
         type: String,
         default: ""
     },
+    fileSize: {
+        type: Number,
+        default: 0
+    },
     extractedText: {
         type: String,
         default: ""

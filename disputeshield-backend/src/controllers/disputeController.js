@@ -111,8 +111,12 @@ import Dispute from '../models/Dispute.js';
 import Evidence from '../models/Evidence.js';
 import AuditLog from "../models/AuditLog.js";
 import DisputeTimeline from '../models/DisputeTimeline.js';
-import { extractTextFromPDF } from '../services/pdfService.js';
+import path from "path";
 import { generateRebuttalWithAI } from "../services/aiService.js";
+import {
+  extractTextFromPDF,
+  generateRebuttalPDF
+} from "../services/pdfService.js";
 // @desc    Create a new dispute
 // @route   POST /api/disputes
 export const createDispute = async (req, res) => {
@@ -204,36 +208,23 @@ export const generateRebuttal = async (req, res) => {
       ? `${dispute.shippingAddress.street}, ${dispute.shippingAddress.city}, ${dispute.shippingAddress.state} ${dispute.shippingAddress.zipCode}`
       : 'N/A';
 
-    //     const rebuttalText = `
-    // DISPUTE REBUTTAL LETTER
-    // Chargeback ID: ${dispute.chargebackId}
-    // Dispute Amount: $${dispute.amount}
-    // Reason Code: ${dispute.reasonCode}
-
-    // To Whom It May Concern,
-
-    // We are formally contesting the chargeback for Chargeback ID ${dispute.chargebackId}.
-    // The transaction of $${dispute.amount} was legitimately authorized and fulfilled.
-
-    // Compelling Evidence Received:
-    // - Tracking Number: ${evidence?.trackingNumber || 'N/A'}
-    // - Customer IP Address: ${evidence?.customerIp || 'N/A'}
-    // - Shipping Address: ${formattedAddress}
-    // - Order Receipt: ${evidence?.orderReceiptUrl ? 'Attached' : 'N/A'}
-
-    // We request an immediate reversal of this chargeback based on the provided proof.
-
-    // Sincerely,
-    // Merchant Support Team
-    //     `.trim();
     const rebuttalText = await generateRebuttalWithAI(
       dispute,
       evidence
     );
 
+    const pdfFileName = `rebuttal-${dispute._id}-${Date.now()}.pdf`;
+    const pdfPath = path.join(process.cwd(), "uploads", pdfFileName);
+
+    await generateRebuttalPDF(rebuttalText, pdfPath);
+
+    dispute.pdfUrl = `/uploads/${pdfFileName}`;
+
     dispute.rebuttalLetterText = rebuttalText;
     dispute.winProbabilityScore = Math.min(score, 100);
     dispute.status = 'GENERATING';
+
+
 
     await dispute.save();
     await DisputeTimeline.create({
@@ -295,9 +286,10 @@ export const uploadEvidence = async (req, res) => {
         ? JSON.parse(shippingAddress)
         : {},
 
-      fileName: req.file.filename,
+      fileName: req.file.originalname,
       fileUrl: `/uploads/${req.file.filename}`,
       fileType: req.file.mimetype,
+      fileSize: req.file.size,
 
       // Store extracted PDF text
       extractedText
@@ -366,6 +358,7 @@ export const getEvidenceByDispute = async (req, res) => {
         fileName: e.fileName,
         fileUrl: e.fileUrl,
         fileType: e.fileType,
+        fileSize: e.fileSize,
         amount: e.amount,
         trackingNumber: e.trackingNumber,
         customerIp: e.customerIp,
@@ -774,7 +767,7 @@ export const finalizeDispute = async (req, res) => {
 
     const { decision, reason } = req.body;
 
-    if (!["MERCHANT_WON", "MERCHANT_LOST", "RESOLVED"].includes(decision)) {
+    if (!["MERCHANT_WON", "MERCHANT_LOST"].includes(decision)) {
       return res.status(400).json({
         message: "Invalid final decision"
       });
@@ -783,7 +776,15 @@ export const finalizeDispute = async (req, res) => {
     dispute.finalDecision = decision;
     dispute.finalDecisionReason = reason || null;
     dispute.finalDecisionAt = new Date();
-
+    
+    if (decision === "MERCHANT_WON") {
+        dispute.status = "WON";
+    } else if (decision === "MERCHANT_LOST") {
+        dispute.status = "LOST";
+    } else {
+        dispute.status = "SUBMITTED";
+    }
+    
     await dispute.save();
 
     res.status(200).json({
