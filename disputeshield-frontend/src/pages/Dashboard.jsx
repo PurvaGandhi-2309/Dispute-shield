@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { apiRequest } from "../services/api";
 import "./Dashboard.css";
 import logo from '../assets/logo.png';
+import Sidebar from '../components/Sidebar';
 import { 
     LayoutDashboard, 
     ShieldAlert, 
@@ -19,6 +20,14 @@ import {
 
 function Dashboard() {
     const [disputes, setDisputes] = useState([]);
+    const [searchQuery, setSearchQuery] = useState("");
+    const navigate = useNavigate();
+
+    const filteredDisputes = disputes.filter(d => 
+        (d.chargebackId && d.chargebackId.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (d.reason && d.reason.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (d._id && d._id.toLowerCase().includes(searchQuery.toLowerCase()))
+    );
 
     useEffect(() => {
         const fetchDisputes = async () => {
@@ -37,7 +46,10 @@ function Dashboard() {
     // Derived Metrics
     // Real Dashboard Metrics
     const activeDisputes = disputes.filter(
-        d => d.status !== "WON" && d.status !== "LOST"
+        d => {
+            const s = (d.status || "").toLowerCase();
+            return !s.includes("won") && !s.includes("lost");
+        }
     );
 
     const activeDisputesCount = activeDisputes.length;
@@ -48,11 +60,11 @@ function Dashboard() {
     );
 
     const wonAmount = disputes
-        .filter(d => d.status === "WON")
+        .filter(d => (d.status || "").toLowerCase().includes("won"))
         .reduce((total, dispute) => total + (Number(dispute.amount) || 0), 0);
 
     const lostAmount = disputes
-        .filter(d => d.status === "LOST")
+        .filter(d => (d.status || "").toLowerCase().includes("lost"))
         .reduce((total, dispute) => total + (Number(dispute.amount) || 0), 0);
 
     const recoveryRate =
@@ -61,46 +73,69 @@ function Dashboard() {
             : 0;
 
     const resolvedCount = disputes.filter(
-        d => d.status === "WON" || d.status === "LOST"
+        d => {
+            const s = (d.status || "").toLowerCase();
+            return s.includes("won") || s.includes("lost");
+        }
     ).length;
+
+    // Activity Chart Data (Last 30 days, 7 intervals of 5 days)
+    const generateChartData = () => {
+        const data = [];
+        const today = new Date();
+        
+        for (let i = 6; i >= 0; i--) {
+            const end = new Date(today);
+            end.setDate(today.getDate() - (i * 5));
+            const start = new Date(today);
+            start.setDate(today.getDate() - (i * 5) - 5); // 5 days prior to 'end'
+            
+            const label = end.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            
+            const count = disputes.filter(d => {
+                const dDate = new Date(d.createdAt);
+                return dDate > start && dDate <= end;
+            }).length;
+            
+            data.push({ label, count });
+        }
+        return data;
+    };
+    
+    const chartData = generateChartData();
+    const maxCount = Math.max(...chartData.map(d => d.count));
+    // Set a sensible max axis value (at least 30, rounded up to nearest 10)
+    const chartMax = Math.max(30, Math.ceil(maxCount / 10) * 10); 
+    const yAxisLabels = [chartMax, Math.round(chartMax * 0.66), Math.round(chartMax * 0.33), 0];
+
+    // Risk Overview Data (Risk based on amount)
+    const riskCounts = { low: 0, medium: 0, high: 0 };
+    disputes.forEach(d => {
+        const amt = Number(d.amount) || 0;
+        if (amt >= 1000) riskCounts.high++;
+        else if (amt >= 200) riskCounts.medium++;
+        else riskCounts.low++;
+    });
+    
+    const totalDisputesForRisk = disputes.length || 1;
+    const dominantRiskValue = Math.max(riskCounts.low, riskCounts.medium, riskCounts.high);
+    const dominantRiskPercent = Math.round((dominantRiskValue / totalDisputesForRisk) * 100);
+    
+    let dominantRiskLabel = "Low Risk";
+    let dominantRiskClass = "low";
+    if (riskCounts.high === dominantRiskValue) {
+        dominantRiskLabel = "High Risk";
+        dominantRiskClass = "high";
+    }
+    else if (riskCounts.medium === dominantRiskValue) {
+        dominantRiskLabel = "Medium Risk";
+        dominantRiskClass = "med";
+    }
+
     return (
         <div className="dashboard-container">
             {/* Sidebar */}
-            <aside className="dashboard-sidebar">
-                <div className="sidebar-brand">
-                    <img src={logo} alt="DisputeShield" className="dashboard-logo-img" />
-                </div>
-
-                <nav className="sidebar-nav">
-                    <div className="nav-item active">
-                        <span className="nav-icon"><LayoutDashboard size={20} /></span>
-                        Overview
-                    </div>
-                    <Link to="/disputes" className="nav-item">
-                        <span className="nav-icon"><ShieldAlert size={20} /></span>
-                        Disputes
-                    </Link>
-                    <Link to="/evidence" className="nav-item">
-                        <span className="nav-icon"><FileText size={20} /></span>
-                        Evidence
-                    </Link>
-                    <Link to="/rebuttals" className="nav-item">
-                        <span className="nav-icon"><Sparkles size={20} /></span>
-                        Rebuttals
-                    </Link>
-                    <div className="nav-item">
-                        <span className="nav-icon"><BarChart2 size={20} /></span>
-                        Analytics
-                    </div>
-                </nav>
-
-                <div className="sidebar-bottom">
-                    <div className="nav-item">
-                        <span className="nav-icon"><Settings size={20} /></span>
-                        Settings
-                    </div>
-                </div>
-            </aside>
+            <Sidebar />
 
             {/* Main Content */}
             <main className="dashboard-main">
@@ -108,17 +143,14 @@ function Dashboard() {
                 <header className="dashboard-topnav">
                     <div className="search-container">
                         <span><Search size={18} /></span>
-                        <input type="text" placeholder="Search disputes..." />
+                        <input 
+                            type="text" 
+                            placeholder="Search disputes..." 
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
                     </div>
                     <div className="topnav-actions">
-                        <button className="btn-icon"><Bell size={20} /></button>
-                        <div className="user-profile">
-                            <div className="user-avatar">M</div>
-                            <div className="user-info">
-                                <strong>Merchant</strong>
-                                <small>Admin</small>
-                            </div>
-                        </div>
                     </div>
                 </header>
 
@@ -131,7 +163,7 @@ function Dashboard() {
                             <h1>Good morning, Merchant 👋</h1>
                             <p>Here's what's happening with your disputes today.</p>
                         </div>
-                        <button className="btn-primary">
+                        <button className="btn-primary" onClick={() => navigate('/disputes', { state: { openForm: true } })}>
                             <span>+</span> New Dispute
                         </button>
                     </div>
@@ -144,9 +176,6 @@ function Dashboard() {
                                 <span className="metric-icon"><ShieldAlert size={18} /></span>
                             </div>
                             <div className="metric-value">{activeDisputesCount}</div>
-                            <div className="metric-change positive">
-                                ↑ 12.5% <span>vs last month</span>
-                            </div>
                         </div>
 
                         <div className="metric-card">
@@ -155,9 +184,6 @@ function Dashboard() {
                                 <span className="metric-icon"><IndianRupee size={18} /></span>
                             </div>
                             <div className="metric-value">₹{amountAtRisk.toLocaleString("en-IN")}</div>
-                            <div className="metric-change negative">
-                                ↑ 4.8% <span>vs last month</span>
-                            </div>
                         </div>
 
                         <div className="metric-card">
@@ -166,9 +192,6 @@ function Dashboard() {
                                 <span className="metric-icon"><TrendingUp size={18} /></span>
                             </div>
                             <div className="metric-value">{recoveryRate}%</div>
-                            <div className="metric-change positive">
-                                ↑ 8.2% <span>vs last month</span>
-                            </div>
                         </div>
 
                         <div className="metric-card">
@@ -177,9 +200,6 @@ function Dashboard() {
                                 <span className="metric-icon"><CheckCircle size={18} /></span>
                             </div>
                             <div className="metric-value">{resolvedCount}</div>
-                            <div className="metric-change neutral">
-                                18 this month
-                            </div>
                         </div>
                     </div>
 
@@ -196,28 +216,27 @@ function Dashboard() {
                             </div>
                             <div className="chart-container">
                                 <div className="chart-y-axis">
-                                    <span>30</span>
-                                    <span>20</span>
-                                    <span>10</span>
-                                    <span>0</span>
+                                    {yAxisLabels.map((val, idx) => (
+                                        <span key={idx}>{val}</span>
+                                    ))}
                                 </div>
                                 <div className="chart-bars">
-                                    <div className="bar" style={{ height: "30%" }}></div>
-                                    <div className="bar" style={{ height: "50%" }}></div>
-                                    <div className="bar" style={{ height: "40%" }}></div>
-                                    <div className="bar" style={{ height: "80%" }}></div>
-                                    <div className="bar" style={{ height: "60%" }}></div>
-                                    <div className="bar" style={{ height: "90%" }}></div>
-                                    <div className="bar" style={{ height: "50%" }}></div>
+                                    {chartData.map((d, idx) => {
+                                        const heightPercent = chartMax > 0 ? (d.count / chartMax) * 100 : 0;
+                                        return (
+                                            <div 
+                                                key={idx} 
+                                                className="bar" 
+                                                style={{ height: `${heightPercent}%` }} 
+                                                title={`${d.count} disputes`}
+                                            ></div>
+                                        );
+                                    })}
                                 </div>
                                 <div className="chart-x-axis">
-                                    <span>Jul 12</span>
-                                    <span>Jul 17</span>
-                                    <span>Jul 22</span>
-                                    <span>Jul 27</span>
-                                    <span>Aug 1</span>
-                                    <span>Aug 6</span>
-                                    <span>Aug 10</span>
+                                    {chartData.map((d, idx) => (
+                                        <span key={idx}>{d.label}</span>
+                                    ))}
                                 </div>
                             </div>
                         </section>
@@ -231,10 +250,10 @@ function Dashboard() {
                                 </div>
                             </div>
                             <div className="risk-content">
-                                <div className="risk-circle">
+                                <div className={`risk-circle ${dominantRiskClass}`}>
                                     <div>
-                                        <strong>72%</strong>
-                                        <span>Low Risk</span>
+                                        <strong>{disputes.length > 0 ? dominantRiskPercent : 0}%</strong>
+                                        <span>{dominantRiskLabel}</span>
                                     </div>
                                 </div>
                                 <div className="risk-details">
@@ -242,19 +261,19 @@ function Dashboard() {
                                         <div className="risk-item-label">
                                             <span className="dot low"></span> Low Risk
                                         </div>
-                                        <strong>18</strong>
+                                        <strong>{riskCounts.low}</strong>
                                     </div>
                                     <div className="risk-item">
                                         <div className="risk-item-label">
                                             <span className="dot med"></span> Medium Risk
                                         </div>
-                                        <strong>4</strong>
+                                        <strong>{riskCounts.medium}</strong>
                                     </div>
                                     <div className="risk-item">
                                         <div className="risk-item-label">
                                             <span className="dot high"></span> High Risk
                                         </div>
-                                        <strong>2</strong>
+                                        <strong>{riskCounts.high}</strong>
                                     </div>
                                 </div>
                             </div>
@@ -282,8 +301,8 @@ function Dashboard() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {disputes.length > 0 ? (
-                                        disputes.map((dispute) => (
+                                    {filteredDisputes.length > 0 ? (
+                                        filteredDisputes.map((dispute) => (
                                             <tr key={dispute._id}>
                                                 <td>
                                                     <div className="table-customer">

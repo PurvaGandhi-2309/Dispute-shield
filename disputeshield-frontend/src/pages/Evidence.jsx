@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { apiRequest } from "../services/api";
 import "./Evidence.css";
+import "./Dashboard.css";
+import Sidebar from '../components/Sidebar';
 import { FolderOpen, CheckCircle, Zap, AlertTriangle } from 'lucide-react';
 
 function getFileTypeLabel(fileType) {
@@ -380,8 +382,10 @@ function Evidence() {
 
 
     return (
-
-        <div className="evidence-page">
+        <div className="dashboard-container">
+            <Sidebar />
+            <main className="dashboard-main" style={{ overflowY: 'auto' }}>
+                <div className="evidence-page">
 
 
             {/* HEADER */}
@@ -1077,7 +1081,8 @@ function Evidence() {
                 )}
 
             </div>
-
+                </div>
+            </main>
         </div>
     );
 }

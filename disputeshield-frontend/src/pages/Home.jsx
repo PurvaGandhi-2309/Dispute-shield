@@ -13,7 +13,8 @@ import {
   CheckCircle2,
   Clock,
   FileText,
-  DollarSign
+  DollarSign,
+  Inbox
 } from 'lucide-react';
 
 function Home() {
@@ -53,12 +54,7 @@ function Home() {
             DisputeShield automates every step of the chargeback management process — from evidence collection to rebuttal generation — so you can focus on growth.
           </p>
           
-          <div className="home-hero-buttons">
-            <button className="home-btn-primary" onClick={() => navigate('/signup')}>
-              Get Started Free <ArrowRight size={16} style={{display: 'inline', marginLeft: '4px', verticalAlign: 'middle'}}/>
-            </button>
-            <button className="home-btn-outline">Book a Demo</button>
-          </div>
+
           
           <div className="home-hero-benefits">
             <span><CheckCircle2 size={16} className="home-icon-green" style={{background: 'transparent'}}/> Reduce losses</span>
@@ -184,13 +180,17 @@ function Home() {
         <div className="home-steps-grid">
           <div className="home-step-card">
             <div className="home-step-number">1</div>
-            <div className="home-step-icon home-icon-green" style={{background: 'transparent'}}>📥</div>
+            <div className="home-step-icon home-icon-green" style={{background: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+              <Inbox size={32} />
+            </div>
             <h3>Dispute Received</h3>
             <p>We capture the dispute details and automatically create a case.</p>
           </div>
           <div className="home-step-card">
             <div className="home-step-number">2</div>
-            <div className="home-step-icon home-icon-blue" style={{background: 'transparent'}}>📄</div>
+            <div className="home-step-icon home-icon-blue" style={{background: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+              <FileText size={32} />
+            </div>
             <h3>Collect Evidence</h3>
             <p>We gather relevant order, transaction, and customer evidence automatically.</p>
           </div>
@@ -204,7 +204,9 @@ function Home() {
           </div>
           <div className="home-step-card">
             <div className="home-step-number">4</div>
-            <div className="home-step-icon home-icon-yellow" style={{background: 'transparent'}}>🛡️</div>
+            <div className="home-step-icon home-icon-yellow" style={{background: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+              <ShieldCheck size={32} />
+            </div>
             <h3>Submit & Win</h3>
             <p>Submit the case confidently and increase your chances of winning.</p>
           </div>
@@ -281,10 +283,7 @@ function Home() {
             <h2>Start winning more disputes today</h2>
             <p style={{color: '#000000'}}>Join thousands of merchants who trust DisputeShield to protect their business.</p>
           </div>
-          <div className="home-cta-actions">
-            <button className="home-btn-primary" onClick={() => navigate('/signup')}>Get Started Free <ArrowRight size={16} style={{display: 'inline', marginLeft: '4px', verticalAlign: 'middle'}}/></button>
-            <button className="home-btn-outline">Talk to an Expert</button>
-          </div>
+
         </div>
       </section>
 

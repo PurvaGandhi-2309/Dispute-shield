@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { apiRequest } from "../services/api";
 import "./Review.css";
+import "./Dashboard.css";
+import Sidebar from '../components/Sidebar';
 
 
 function Review() {
@@ -124,13 +126,21 @@ function Review() {
     };
     if (loading) {
         return (
-            <div className="review-page">
-                Loading review...
+            <div className="dashboard-container">
+                <Sidebar />
+                <main className="dashboard-main" style={{ overflowY: 'auto' }}>
+                    <div className="review-page">
+                        Loading review...
+                    </div>
+                </main>
             </div>
         );
     }
     return (
-        <div className="review-page">
+        <div className="dashboard-container">
+            <Sidebar />
+            <main className="dashboard-main" style={{ overflowY: 'auto' }}>
+                <div className="review-page">
 
             {/* Header */}
             <header className="review-top">
@@ -498,7 +508,6 @@ function Review() {
                             >
                                 <option value="MERCHANT_WON">Merchant Won</option>
                                 <option value="MERCHANT_LOST">Merchant Lost</option>
-                                <option value="RESOLVED">Resolved</option>
                             </select>
                         </div>
 
@@ -545,6 +554,8 @@ function Review() {
                 </div>
             )}
 
+                </div>
+            </main>
         </div>
     );
 }

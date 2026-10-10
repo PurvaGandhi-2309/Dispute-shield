@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { apiRequest } from "../services/api";
 import { useNavigate, Link } from "react-router-dom";
 import "./Rebuttals.css";
+import "./Dashboard.css";
+import Sidebar from '../components/Sidebar';
 import logo from '../assets/logo.png';
 import rebuttalIcon from '../assets/rebuttal-icon-transparent.png';
 import { 
@@ -20,12 +22,15 @@ import {
 function Rebuttals() {
     const [disputes, setDisputes] = useState([]);
     const [selectedDispute, setSelectedDispute] = useState(null);
+    const [disputeEvidence, setDisputeEvidence] = useState([]);
     const navigate = useNavigate();
 
 
     const handleGenerate = async () => {
-        if (!selectedDispute) return;
-
+        if (!selectedDispute) {
+            alert("Please select a dispute first from the left panel to generate a rebuttal.");
+            return;
+        }
         try {
             const generated = await apiRequest(
                 `/disputes/${selectedDispute._id}/generate`,
@@ -61,11 +66,79 @@ function Rebuttals() {
         fetchDisputes();
     }, []);
 
+    // Fetch evidence for selected dispute
+    useEffect(() => {
+        const fetchEvidence = async () => {
+            if (!selectedDispute) return;
+            try {
+                const data = await apiRequest(`/disputes/${selectedDispute._id}/evidence`);
+                setDisputeEvidence(data || []);
+            } catch (error) {
+                console.error("Failed to fetch evidence:", error);
+                setDisputeEvidence([]);
+            }
+        };
+
+        fetchEvidence();
+    }, [selectedDispute]);
+
+    // Evidence Analyzer Logic
+    const analyzeEvidence = () => {
+        const scoreBreakdown = {
+            Invoice: { score: 20, present: false, label: "Invoice" },
+            Tracking: { score: 20, present: false, label: "Tracking" },
+            DeliveryProof: { score: 20, present: false, label: "Delivery Proof" },
+            CustomerIP: { score: 15, present: false, label: "Customer IP" },
+            Communication: { score: 15, present: false, label: "Communication" },
+            OrderDetails: { score: 10, present: false, label: "Order Details" }
+        };
+
+        disputeEvidence.forEach(item => {
+            const name = (item.fileName || "").toLowerCase();
+            const type = (item.fileType || "").toLowerCase();
+            const content = name + " " + type;
+
+            if (content.includes("invoice") || content.includes("receipt")) scoreBreakdown.Invoice.present = true;
+            if (content.includes("track") || content.includes("ship")) scoreBreakdown.Tracking.present = true;
+            if (content.includes("deliver") || content.includes("proof") || content.includes("signature")) scoreBreakdown.DeliveryProof.present = true;
+            if (content.includes("ip") || content.includes("network")) scoreBreakdown.CustomerIP.present = true;
+            if (content.includes("email") || content.includes("chat") || content.includes("message") || content.includes("communication")) scoreBreakdown.Communication.present = true;
+            if (content.includes("order") || content.includes("detail")) scoreBreakdown.OrderDetails.present = true;
+        });
+
+        let totalScore = 0;
+        const items = [];
+        
+        Object.keys(scoreBreakdown).forEach(key => {
+            const criteria = scoreBreakdown[key];
+            if (criteria.present) {
+                totalScore += criteria.score;
+            }
+            items.push(criteria);
+        });
+
+        let level = "Weak";
+        if (totalScore >= 80) level = "Strong";
+        else if (totalScore >= 50) level = "Moderate";
+
+        const missingItem = items.find(i => !i.present);
+        const recommendation = missingItem 
+            ? `Add ${missingItem.label.toLowerCase()} to strengthen this dispute.` 
+            : "Evidence is very strong. Ready to generate rebuttal.";
+
+        return { score: totalScore, level, items, recommendation };
+    };
+
+    const evidenceAnalysis = analyzeEvidence();
+
     // 
 
 
     return (
-        <div className="reb-page-container">
+        <div className="dashboard-container">
+            <Sidebar />
+            <main className="dashboard-main" style={{ overflowY: 'auto' }}>
+                <div className="reb-page-container">
             {/* ── Top Navbar ── */}
             <nav className="reb-navbar">
                 <div className="reb-nav-left">
@@ -78,9 +151,6 @@ function Rebuttals() {
                     <button className="reb-top-generate-btn" onClick={handleGenerate}>
                         Generate Rebuttal
                     </button>
-                    <button className="reb-ai-btn">AI <span>⌄</span></button>
-                    <button className="reb-icon-btn">⌕</button>
-                    <div className="reb-avatar"></div>
                 </div>
             </nav>
 
@@ -152,6 +222,8 @@ function Rebuttals() {
                                     onClick={() => setSelectedDispute(dispute)}
                                 >
                                     <div className="reb-card-status">
+                                        ID: <strong>{dispute.chargebackId}</strong>
+                                        <br />
                                         Status: <span className="reb-badge">{dispute.status}</span>
                                     </div>
                                     <div className="reb-card-claim">
@@ -185,6 +257,35 @@ function Rebuttals() {
                                     <div className="reb-doc-meta">
                                         <strong>Date:</strong> {new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}<br />
                                         <strong>Case Number:</strong> {selectedDispute.chargebackId}
+                                    </div>
+
+                                    <div className="evidence-analyzer-container">
+                                        <div className="evidence-analyzer-header">
+                                            <h3 style={{ margin: 0 }}>Evidence Strength</h3>
+                                            <div className={`evidence-score-badge level-${evidenceAnalysis.level.toLowerCase()}`}>
+                                                {evidenceAnalysis.score} / 100
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="evidence-breakdown">
+                                            {evidenceAnalysis.items.map((item, idx) => (
+                                                <div className="evidence-breakdown-item" key={idx}>
+                                                    <div className="evidence-item-label">
+                                                        <span className={item.present ? "status-icon present" : "status-icon missing"}>
+                                                            {item.present ? "✓" : "⚠"}
+                                                        </span>
+                                                        {item.label}
+                                                    </div>
+                                                    <div className={item.present ? "evidence-status present" : "evidence-status missing"}>
+                                                        {item.present ? "Strong" : "Missing"}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+
+                                        <div className="evidence-recommendation">
+                                            <strong>Recommendation:</strong> {evidenceAnalysis.recommendation}
+                                        </div>
                                     </div>
 
                                     {selectedDispute.rebuttalLetterText ? (
@@ -276,7 +377,7 @@ function Rebuttals() {
                                                                     Authorization: `Bearer ${token}`
                                                                 },
                                                                 body: JSON.stringify({
-                                                                    decision: "RESOLVED",
+                                                                    decision: "SUBMITTED",
                                                                     reason: "Rebuttal submitted"
                                                                 })
                                                             }
@@ -315,6 +416,8 @@ function Rebuttals() {
                     </div>
                 </div>
             </div>
+                </div>
+            </main>
         </div >
     );
 }

@@ -1,12 +1,16 @@
 import { apiRequest } from "../services/api";
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import "./Disputes.css";
+import "./Dashboard.css"; // For shared layout
+import Sidebar from '../components/Sidebar';
 import { ShieldAlert } from 'lucide-react';
 
 function Disputes() {
+    const location = useLocation();
     const [disputes, setDisputes] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
-    const [showForm, setShowForm] = useState(false);
+    const [showForm, setShowForm] = useState(location.state?.openForm || false);
     const [activeStatus, setActiveStatus] = useState("ALL");
     const [showFilters, setShowFilters] = useState(false);
     const [formData, setFormData] = useState({
@@ -130,7 +134,10 @@ function Disputes() {
     });
 
     return (
-        <div className="disputes-page">
+        <div className="dashboard-container">
+            <Sidebar />
+            <main className="dashboard-main" style={{ overflowY: 'auto' }}>
+                <div className="disputes-page">
 
             {/* Page Header */}
             <div className="disputes-header">
@@ -585,11 +592,6 @@ function Disputes() {
                         Filter
                         <span>⌄</span>
                     </button>
-
-                    <button>
-                        Sort
-                        <span>⌄</span>
-                    </button>
                 </div>
 
             </div>
@@ -725,7 +727,8 @@ function Disputes() {
                 </div>
 
             </div>
-
+                </div>
+            </main>
         </div>
     );
 }

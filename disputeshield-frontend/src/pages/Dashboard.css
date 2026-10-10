@@ -22,6 +22,7 @@
 
 .dashboard-container * {
     box-sizing: border-box;
+    box-shadow: none !important;
 }
 
 .dashboard-container a {
@@ -281,6 +282,7 @@
     padding: 1.5rem;
     backdrop-filter: blur(10px);
     transition: transform 0.2s;
+    box-shadow: none !important;
 }
 
 .metric-card:hover {
@@ -607,4 +609,18 @@
     .search-container {
         width: 200px;
     }
+}
+.risk-circle.low {
+    border-top-color: var(--accent-green);
+    border-right-color: var(--accent-green);
+}
+
+.risk-circle.med {
+    border-top-color: var(--accent-yellow);
+    border-right-color: var(--accent-yellow);
+}
+
+.risk-circle.high {
+    border-top-color: var(--accent-red);
+    border-right-color: var(--accent-red);
 }
